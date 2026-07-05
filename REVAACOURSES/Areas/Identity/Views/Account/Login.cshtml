@@ -1,0 +1,153 @@
+﻿@model REVAACOURSES.ViewModels.LoginVM
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    body {
+        background: #f4f7fc;
+    }
+
+    .login-section {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .login-card {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .left-side {
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        color: white;
+        padding: 50px;
+        height: 100%;
+    }
+
+        .left-side h2 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+    .right-side {
+        background: white;
+        padding: 50px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .btn-login {
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: bold;
+    }
+
+    .links a {
+        text-decoration: none;
+        display: block;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container login-section">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="card login-card">
+                <div class="row g-0">
+
+                    <!-- Left Side -->
+                    <div class="col-md-5 d-none d-md-block">
+                        <div class="left-side">
+
+                            <h2>Welcome Back 👋</h2>
+                            <p>
+                                Login to continue learning and access your courses anytime.
+                            </p>
+
+                            <hr />
+
+                            <h5>Why REVAA COURSES?</h5>
+                            <ul>
+                                <li>High Quality Courses</li>
+                                <li>Expert Instructors</li>
+                                <li>Easy Learning Experience</li>
+                                <li>Certificates After Completion</li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="col-md-7">
+                        <div class="right-side">
+
+                            <h2 class="mb-4 text-center">Login</h2>
+
+                            <form asp-action="Login">
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                                <div class="mb-3">
+                                    <label asp-for="UserNameOrEmail" class="form-label"></label>
+                                    <input asp-for="UserNameOrEmail" class="form-control" placeholder="Enter Username or Email" />
+                                    <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Password" class="form-label"></label>
+                                    <input asp-for="Password" type="password" class="form-control" placeholder="Enter Password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" asp-for="RememberMe" />
+                                    <label class="form-check-label" asp-for="RememberMe"></label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 btn-login">
+                                    Login
+                                </button>
+
+                            </form>
+
+                            <div class="links text-center mt-4">
+
+                                <a asp-action="Register" class="text-primary">
+                                    Create New Account
+                                </a>
+
+                                <a asp-action="ResendEmailConfirmation">
+                                    Resend Email Confirmation
+                                </a>
+
+                                <a asp-action="ForgetPassword" class="text-danger">
+                                    Forgot Password?
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <partial name="_NotificationPartial" />
+    }
+}

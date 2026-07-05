@@ -1,0 +1,69 @@
+﻿<div class="container mt-4">
+
+    <h2 class="mb-4">Check Student Enrollment</h2>
+
+    <form asp-action="CheckStudent" method="get">
+
+        <!-- Students -->
+        <div class="mb-3">
+            <label class="form-label">Select Student</label>
+
+            <select name="studentId" class="form-select">
+
+                <option disabled selected>
+                    -- Select Student --
+                </option>
+
+                @foreach (var item in ViewBag.Students)
+                {
+                    <option value="@item.Id">
+                        @item.User.Name
+                    </option>
+                }
+
+            </select>
+        </div>
+
+        <!-- Courses -->
+        <div class="mb-3">
+            <label class="form-label">Select Course</label>
+
+            <select name="courseId" class="form-select">
+
+                <option disabled selected>
+                    -- Select Course --
+                </option>
+
+                @foreach (var item in ViewBag.Courses)
+                {
+                    <option value="@item.Id">
+                        @item.Title
+                    </option>
+                }
+
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Check Enrollment
+        </button>
+
+    </form>
+
+    <br />
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+</div>

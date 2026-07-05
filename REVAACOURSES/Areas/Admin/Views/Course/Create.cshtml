@@ -1,0 +1,48 @@
+﻿@using REVAACOURSES.ViewModels
+
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-6">
+            <h2 class="display-6">Create new Course</h2>
+        </div>
+    </div>
+
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input class="form-control" name="Title"/>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Image</label>
+                    <input type="file" class="form-control" name="ImgFile" />
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a description here" style="height: 100px" name="Description"></textarea>
+                        <label for="description">You Description Here...</label>
+
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="Price" class="form-label">Price</label>
+                    <input class="form-control" name="Price" type="number"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="CategoryId" class="form-label">Category</label>
+                    <select name="CategoryId" class="form-select">
+                        @foreach(var item in Model.Categories)
+                        {
+                            <option value="@item.CategoryId" selected>@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+

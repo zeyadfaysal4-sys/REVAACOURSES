@@ -1,0 +1,176 @@
+﻿@using REVAACOURSES.Utiltes
+@model IEnumerable<Course>
+<div class="container">
+	<div class="row mb-3 align-items-center my-3">
+		<div class="col-md-6">
+			<h2 class="display-6">All Courses</h2>
+		</div>
+		<div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+			<a href="/Admin/Course/Create" class="btn btn-success">Create</a>
+		</div>
+	</div>
+	<!-- Filter Section -->
+	<section class="py-3 filter-bar">
+		<div class="container ">
+			<div class="row" style="background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;">
+				<div class="col-12">
+					<form>
+						<div class="row">
+							<!-- Course Name -->
+							<div class="col-md-3">
+								<input type="text" class="form-control" placeholder="Course Name" name="Title" value="@ViewBag.Title">
+							</div>
+
+							<!-- Price -->
+							<div class="col-md-2">
+								<input type="number" class="form-control" placeholder="Price" name="Price" value="@ViewBag.Price">
+							</div>
+
+							<div class="col-md-2">
+								<input type="date" class="form-control" placeholder="CreatedAt" name="CreatedAt" value="@ViewBag.CreatedAt">
+							</div>
+
+							<!-- Category -->
+							<div class="col-md-2">
+								<select name="CategoryId" class="form-control">
+									<option>--Select Category--</option>
+									@* @if (ViewData["Categories"] is List<Category> categories)
+                                {
+                                    @foreach (var item in categories)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+
+                                    }
+                                } *@
+
+									@foreach (var item in ViewBag.Categories)
+									{
+										@if (item.CategoryId == ViewBag.CategoryId)
+										{
+											<option value="@item.CategoryId" selected>@item.Name</option>
+										}
+										else
+										{
+											<option value="@item.CategoryId">@item.Name</option>
+										}
+									}
+								</select>
+							</div>
+
+						</div>
+
+						<div class="row mt-3">
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-dark w-100">Filter</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="row">
+		<div class="col-12">
+
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Title</th>
+						<th scope="col">Price</th>
+						<th scope="col">CreatedAt</th>
+						<th scope="col">Category Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<th scope="row"> @item.Id</th>
+							<td>@item.Title</td>
+							<td>@item.Price</td>
+							<td>@item.CreatedAt</td>
+							<td>@item.Category.Name</td>
+
+							@if (User.IsInRole(CD.SUPER_ADMIN_ROLE) || User.IsInRole(CD.ADMIN_ROLE))
+							{
+
+								<td>
+									<a href="/Admin/Course/Update/@item.Id" type="button" class="btn btn-warning">Update</a>
+									<a href="/Admin/Course/Delete/@item.Id"
+									   class="btn btn-danger btn-delete">
+										Delete
+									</a>
+								</td>
+							}
+							else
+							{
+								<td>
+									No Action!!
+								</td>
+
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<nav aria-label="Page navigation example">
+	<div class="d-flex justify-content-center align-items-center">
+		<ul class="pagination">
+			<li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+				<a class="page-link" href="/Admin/Course/Index?Page=@(ViewBag.CurrentPage - 1)">
+					Previous
+				</a>
+			</li>
+			@for (int i = 1; i <= ViewBag.TotalPages; i++)
+			{
+				<li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+					<a class="page-link" href="/Admin/Course/Index?Page=@i">
+						@i
+					</a>
+				</li>
+			}
+			<li class="page-item  @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+				<a class="page-link" href="/Admin/Course/Index?Page=@(ViewBag.CurrentPage + 1)">
+					Next
+				</a>
+			</li>
+		</ul>
+	</div>
+
+</nav>
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+
+		const deleteButtons = document.querySelectorAll(".btn-delete");
+
+		deleteButtons.forEach(btn => {
+			btn.addEventListener("click", function (e) {
+				e.preventDefault();
+
+				const url = this.getAttribute("href");
+
+				Swal.fire({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#d33',
+					cancelButtonColor: '#3085d6',
+					confirmButtonText: 'Yes, delete it!'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = url;
+					}
+				});
+			});
+		});
+
+	});
+</script>

@@ -1,0 +1,143 @@
+﻿@using REVAACOURSES.ViewModels
+@model DashboardVM
+
+<div class="container-fluid mt-4">
+
+    <h2 class="mb-4 fw-bold">Dashboard</h2>
+
+    <!-- Cards -->
+    <div class="row g-3">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow border-0 bg-primary text-white">
+                <div class="card-body">
+                    <h5>Courses</h5>
+                    <h2>@Model.Course</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow border-0 bg-info text-white">
+                <div class="card-body">
+                    <h5>Categories</h5>
+                    <h2>@Model.Categories</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow border-0 bg-success text-white">
+                <div class="card-body">
+                    <h5>Users</h5>
+                    <h2>@Model.User</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow border-0 bg-warning text-white">
+                <div class="card-body">
+                    <h5>Payments</h5>
+                    <h2>@Model.Payment</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow border-0 bg-danger text-white">
+                <div class="card-body">
+                    <h5>Total Revenue</h5>
+                    <h2>$@Model.TotalPrice</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Chart 1 -->
+    <div class="card mt-5 shadow">
+        <div class="card-header">
+            <h5>System Statistics</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="statsChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <!-- Chart 2 -->
+    <div class="card mt-4 shadow">
+        <div class="card-header">
+            <h5>Total Revenue</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="revenueChart" height="100"></canvas>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    // Statistics Chart
+    var ctx1 = document.getElementById('statsChart');
+
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['Courses', 'Users', 'Payments', 'Categories'],
+            datasets: [{
+                label: 'System Data',
+                data: [
+                    @Model.Course,
+                    @Model.User,
+                    @Model.Payment,
+                    @Model.Categories
+                ],
+                backgroundColor: [
+                    '#0d6efd',
+                    '#198754',
+                    '#ffc107',
+                    '#6f42c1'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    // Revenue Chart
+    var ctx2 = document.getElementById('revenueChart');
+
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ['Revenue'],
+            datasets: [{
+                label: 'Total Revenue ($)',
+                data: [@Model.TotalPrice],
+                backgroundColor: ['#dc3545'],
+                borderColor: '#dc3545',
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true
+        }
+    });
+
+</script>

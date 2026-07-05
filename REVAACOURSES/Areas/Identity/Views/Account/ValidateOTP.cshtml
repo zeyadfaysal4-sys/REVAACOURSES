@@ -1,0 +1,40 @@
+﻿@model REVAACOURSES.ViewModels.ValidateOTPVM
+
+@{
+    ViewData["Title"] = "ValidateOTP";
+}
+
+<div class="container">
+
+    <h1>ValidateOTP</h1>
+
+    <h4>ValidateOTPVM</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="ValidateOTP">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="UserId" hidden />
+                <div class="form-group">
+                    <label asp-for="OTP" class="control-label"></label>
+                    <input asp-for="OTP" class="form-control" />
+                    <span asp-validation-for="OTP" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

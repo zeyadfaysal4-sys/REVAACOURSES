@@ -1,0 +1,112 @@
+﻿@using REVAACOURSES.ViewModels
+@model ApplicationUserVM
+<div class="container">
+    <div class="row gutters my-3">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="account-settings">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin" style="width: 90px">
+                            </div>
+                            <h5 class="user-name"></h5>
+                            <h6 class="user-email"></h6>
+                        </div>
+                        <div class="about">
+                            <h5>About</h5>
+                            <p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <form asp-action="UpdateProfile">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-2 text-primary">Personal Details</h6>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name</label>
+                                    <input asp-for="Name" class="form-control" id="fullName" placeholder="Enter full name">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="eMail">Email</label>
+                                    <input asp-for="Email" disabled class="form-control" placeholder="Enter email ID">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="eMail">phone Number</label>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter Phone Number">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mt-3 mb-2 text-primary">Address</h6>
+
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="Address">Address</label>
+                                        <input asp-for="Address" class="form-control" placeholder="Enter Address">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gutters my-3">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="text-right">
+                                        <button type="reset" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
+                                        <button type="submit" id="submit" name="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form asp-action="UpdatePassword">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-2 text-primary">Update Password</h6>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="CurrentPassword">Current Password</label>
+                                    <input asp-for="CurrentPassword" class="form-control" placeholder="Enter Current Password">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label for="New Password">New Password</label>
+                                    <input asp-for="NewPassword" class="form-control" placeholder="Enter New Password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters my-3">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="text-right">
+                                    <button type="submit" id="submit" name="submit" class="btn btn-primary">Update Password</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="~/Views/Shared/_NotificationPartial.cshtml" />
+}

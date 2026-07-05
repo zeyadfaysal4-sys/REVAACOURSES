@@ -1,0 +1,101 @@
+﻿@using REVAACOURSES.Models
+@using REVAACOURSES.Utiltes
+@model IEnumerable<Category>
+<div class="container">
+	<div class="row mb-3 align-items-center my-3">
+		<div class="col-md-6">
+			<h2 class="display-6">All Categories</h2>
+		</div>
+		<div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+			<a href="/Admin/Category/Create" class="btn btn-success">Create</a>
+		</div>
+	</div>
+	<div>
+		@* @Context.Request.Cookies["Success-Notification"]  *@
+       
+	</div>
+	<div class="row">
+		<div class="col-12">
+
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Name</th>
+						<th scope="col">Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<th scope="row"> @item.CategoryId</th>
+							<td>@item.Name</td>
+							<td>@item.Description</td>
+
+							@if (User.IsInRole(CD.SUPER_ADMIN_ROLE) || User.IsInRole(CD.ADMIN_ROLE))
+							{
+								<td>
+									<a href="/Admin/Category/Update/@item.CategoryId" type="button" class="btn btn-warning">Update</a>
+									<a href="/Admin/Category/Delete/@item.CategoryId"
+										   class="btn btn-danger btn-delete">
+										Delete
+									</a>
+								</td>
+							}
+							else
+							{
+								<td>
+
+									No Action!!
+								</td>
+							}
+
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+
+		const deleteButtons = document.querySelectorAll(".btn-delete");
+
+		deleteButtons.forEach(btn => {
+			btn.addEventListener("click", function (e) {
+				e.preventDefault(); 
+
+				const url = this.getAttribute("href");
+
+				Swal.fire({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#d33',
+					cancelButtonColor: '#3085d6',
+					confirmButtonText: 'Yes, delete it!'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.location.href = url;
+					}
+				});
+			});
+		});
+
+	});
+</script>
+
+@section Scripts {
+	@if (@TempData["Success-Notification"] is not null)
+	{
+		<script>
+			toastr.success('@TempData["Success-Notification"]')
+		</script>
+	}
+    
+}

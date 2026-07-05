@@ -1,0 +1,157 @@
+﻿@using REVAACOURSES.Utiltes
+@using REVAACOURSES.ViewModels
+@model IEnumerable<UserVM>
+
+<div class="container">
+	<div class="row mb-3 align-items-center my-3">
+		<div class="col-md-6">
+			<h2 class="display-6">All Users</h2>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>UserName</th>
+						<th>Email</th>
+						<th>Email Confirmed</th>
+						<th>Actions</th>
+						<th>Roles</th>
+						<th>Change Role</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>@item.Id</td>
+							<td>@item.Name</td>
+							<td>@item.UserName</td>
+							<td>@item.Email</td>
+
+							<td>
+								@if (item.EmailConfirmed)
+								{
+									<span class="badge bg-success">Confirmed</span>
+								}
+								else
+								{
+									<span class="badge bg-danger">Not Confirmed</span>
+								}
+							</td>
+
+							<td>
+								@if (User.IsInRole(CD.SUPER_ADMIN_ROLE) || User.IsInRole(CD.ADMIN_ROLE))
+								{
+									@if (item.LockoutEnd is null || DateTime.UtcNow > item.LockoutEnd)
+									{
+										<a href="/Admin/User/LockUnLock/@item.Id"
+										   class="btn btn-danger">
+											Lock
+										</a>
+									}
+									else
+									{
+										<a href="/Admin/User/LockUnLock/@item.Id"
+										   class="btn btn-success">
+											Unlock
+										</a>
+									}
+								}
+								else
+								{
+									<span>No Action</span>
+								}
+							</td>
+
+							
+							<td>
+								@string.Join(" , ", item.Roles)
+							</td>
+
+							<td>
+								@if (User.IsInRole(CD.SUPER_ADMIN_ROLE))
+								{
+									<form asp-action="ChangeRole" method="post">
+
+										<input type="hidden" name="id" value="@item.Id" />
+
+										<div class="form-check">
+											<input class="form-check-input"
+												   type="checkbox"
+												   name="roles"
+												   value="Student"
+												   @(item.Roles.Contains("Student") ? "checked" : "") />
+											<label>Student</label>
+										</div>
+
+										<div class="form-check">
+											<input class="form-check-input"
+												   type="checkbox"
+												   name="roles"
+												   value="Instructor"
+												   @(item.Roles.Contains("Instructor") ? "checked" : "") />
+											<label>Instructor</label>
+										</div>
+
+										<div class="form-check">
+											<input class="form-check-input"
+												   type="checkbox"
+												   name="roles"
+												   value="Assistant"
+												   @(item.Roles.Contains("Assistant") ? "checked" : "") />
+											<label>Assistant</label>
+										</div>
+
+										<div class="form-check">
+											<input class="form-check-input"
+												   type="checkbox"
+												   name="roles"
+												   value="Admin"
+												   @(item.Roles.Contains("Admin") ? "checked" : "") />
+											<label>Admin</label>
+										</div>
+
+										<button type="submit"
+												class="btn btn-primary mt-2">
+											Change Roles
+										</button>
+
+									</form>
+								}
+								else
+								{
+									<span>No Action</span>
+								}
+							</td>
+
+						</tr>
+					}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@if (TempData["Success-Notification"] != null)
+	{
+		<script>
+			toastr.success('@TempData["Success-Notification"]')
+		</script>
+	}
+
+	@if (TempData["Error-Notification"] != null)
+	{
+		<script>
+			toastr.error('@TempData["Error-Notification"]')
+		</script>
+	}
+}
