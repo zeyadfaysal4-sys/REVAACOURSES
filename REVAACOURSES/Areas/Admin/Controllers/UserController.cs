@@ -78,6 +78,29 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE}")]
+        public async Task<IActionResult> ChangeRole(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return NotFound();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var vm = new UserVM
+            {
+                Id = user.Id,
+                Name = user.Name,
+                UserName = user.UserName,
+                Email = user.Email,
+                Roles = roles.ToList()
+            };
+
+            return View(vm);
+        }
+
         [HttpPost]
         [Authorize(Roles = $"{CD.ADMIN_ROLE},{CD.SUPER_ADMIN_ROLE}")]
         public async Task<IActionResult> ChangeRole(string id, List<string> roles)

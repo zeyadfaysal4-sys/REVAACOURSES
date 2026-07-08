@@ -16,13 +16,16 @@ namespace REVAACOURSES.Areas.Identity.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly IRepository<ApplicationUserOTP> _ApplicationUserOTP;
+        private readonly IRepository<Student> _studentRepository;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, IRepository<ApplicationUserOTP> otpRepository)
+
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, IRepository<ApplicationUserOTP> otpRepository, IRepository<Student> studentRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _ApplicationUserOTP = otpRepository;
+            _studentRepository = studentRepository;
         }
 
         [HttpGet]
@@ -62,6 +65,10 @@ namespace REVAACOURSES.Areas.Identity.Controllers
             await _emailSender.SendEmailAsync(registerVM.Email, "Ecommerc Confirm Email "
                 , $"<h1>Click <a href={link}> here </a> To Confirm Your Email</h1>");
             await _userManager.AddToRoleAsync(user, CD.STUDENT_ROLE);
+            var student = new Student()
+            {
+                UserId = user.Id
+            };
             return RedirectToAction(nameof(Login));
         }
         [HttpGet]

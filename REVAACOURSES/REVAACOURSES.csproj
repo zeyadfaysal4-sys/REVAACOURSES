@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e8311f89-c676-435b-895e-4bc2626e2ea9</UserSecretsId>
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Mapster" Version="10.0.9" />

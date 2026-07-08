@@ -36,7 +36,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
                 ViewBag.CategoryId = filter.CategoryId;
             }
 
-            if(filter.Price != null)
+            if (filter.Price != null)
             {
                 course = course.Where(c => c.Price == filter.Price);
                 ViewBag.Price = filter.Price;

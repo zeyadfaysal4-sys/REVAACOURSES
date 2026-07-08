@@ -1,0 +1,211 @@
+﻿@using REVAACOURSES.ViewModels;
+@model UserVM
+
+<style>
+    .role-card {
+        cursor: pointer;
+        border: 2px solid #ddd;
+        border-radius: 12px;
+        transition: .3s;
+        position: relative;
+    }
+
+    .role-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    }
+
+    .role-card.active {
+        border-color: #0d6efd;
+        background: #eef5ff;
+        box-shadow: 0 8px 20px rgba(13,110,253,.25);
+    }
+
+    .check-icon {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        color: #0d6efd;
+        display: none;
+    }
+
+    .role-card.active .check-icon {
+        display: block;
+    }
+</style>
+
+<form asp-action="ChangeRole" method="post">
+
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="container-fluid">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-user-cog"></i>
+                    Change Roles
+                </h3>
+            </div>
+
+            <div class="card-body">
+
+                <div class="text-center mb-5">
+
+                    <div class="rounded-circle bg-primary text-white d-inline-flex
+                                justify-content-center align-items-center"
+                         style="width:90px;height:90px;font-size:35px;">
+
+                        @Model.Name.Substring(0,1)
+
+                    </div>
+
+                    <h3 class="mt-3">@Model.Name</h3>
+                    <p class="text-muted">@Model.Email</p>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Student -->
+                    <div class="col-md-6 mb-3">
+                        <label class="card p-3 role-card">
+
+                            <span class="check-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </span>
+
+                            <input type="checkbox"
+                                   class="role-checkbox d-none"
+                                   name="roles"
+                                   value="Student"
+                                   @(Model.Roles.Contains("Student") ? "checked" : "")>
+
+                            <h4>🎓 Student</h4>
+                            <small class="text-muted">
+                                Can purchase and watch courses.
+                            </small>
+
+                        </label>
+                    </div>
+
+                    <!-- Instructor -->
+                    <div class="col-md-6 mb-3">
+                        <label class="card p-3 role-card">
+
+                            <span class="check-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </span>
+
+                            <input type="checkbox"
+                                   class="role-checkbox d-none"
+                                   name="roles"
+                                   value="Instructor"
+                                   @(Model.Roles.Contains("Instructor") ? "checked" : "")>
+
+                            <h4>👨‍🏫 Instructor</h4>
+                            <small class="text-muted">
+                                Can create and manage courses.
+                            </small>
+
+                        </label>
+                    </div>
+
+                    <!-- Assistant -->
+                    <div class="col-md-6 mb-3">
+                        <label class="card p-3 role-card">
+
+                            <span class="check-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </span>
+
+                            <input type="checkbox"
+                                   class="role-checkbox d-none"
+                                   name="roles"
+                                   value="Assistant"
+                                   @(Model.Roles.Contains("Assistant") ? "checked" : "")>
+
+                            <h4>🧑‍💼 Assistant</h4>
+                            <small class="text-muted">
+                                Can help manage the platform.
+                            </small>
+
+                        </label>
+                    </div>
+
+                    <!-- Admin -->
+                    <div class="col-md-6 mb-3">
+                        <label class="card p-3 role-card">
+
+                            <span class="check-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </span>
+
+                            <input type="checkbox"
+                                   class="role-checkbox d-none"
+                                   name="roles"
+                                   value="Admin"
+                                   @(Model.Roles.Contains("Admin") ? "checked" : "")>
+
+                            <h4>👑 Admin</h4>
+                            <small class="text-muted">
+                                Full administration permissions.
+                            </small>
+
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer text-end">
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Cancel
+                </a>
+
+                <button class="btn btn-success">
+                    <i class="fas fa-save"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts{
+
+<script>
+
+document.querySelectorAll(".role-card").forEach(function (card) {
+
+    let checkbox = card.querySelector(".role-checkbox");
+
+    // لو الرول متحدد من الأول
+    if (checkbox.checked) {
+        card.classList.add("active");
+    }
+
+    // كل ما الـ checkbox يتغير
+    checkbox.addEventListener("change", function () {
+
+        if (checkbox.checked) {
+            card.classList.add("active");
+        } else {
+            card.classList.remove("active");
+        }
+
+    });
+
+});
+
+</script>
+
+}
