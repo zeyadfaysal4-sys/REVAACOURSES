@@ -49,6 +49,7 @@ namespace REVAACOURSES
             builder.Services.AddScoped<IRepository<Instructor>, Repository<Instructor>>();
             builder.Services.AddScoped<IRepository<Lesson>, Repository<Lesson>>();
             builder.Services.AddScoped<IRepository<Question>, Repository<Question>>();
+            builder.Services.AddScoped<IRepository<QuizResult>, Repository<QuizResult>>();
             builder.Services.AddScoped<IRepository<StudentProgress>, Repository<StudentProgress>>();
             builder.Services.AddScoped<IRepository<Certificate>, Repository<Certificate>>();
             builder.Services.AddScoped<IRepository<Quiez>, Repository<Quiez>>();
@@ -68,6 +69,8 @@ namespace REVAACOURSES
             });
             //builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
             var app = builder.Build();
 

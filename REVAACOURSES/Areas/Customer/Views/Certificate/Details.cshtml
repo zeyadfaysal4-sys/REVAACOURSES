@@ -1,0 +1,49 @@
+﻿@model Certificate
+
+@{
+    ViewData["Title"] = "Certificate";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg p-5">
+
+        <div class="text-center">
+
+            <h1 class="text-success">
+                CERTIFICATE OF COMPLETION
+            </h1>
+
+            <hr />
+
+            <h4>This certifies that</h4>
+
+            <h2 class="fw-bold">
+                @Model.Student.User.Name
+            </h2>
+
+            <br />
+
+            <h4>has successfully completed</h4>
+
+            <h2 class="text-primary">
+                @Model.Course.Title
+            </h2>
+
+            <br />
+
+            <p>
+                <strong>Issue Date:</strong>
+                @Model.IssueDate.ToShortDateString()
+            </p>
+
+            <p>
+                <strong>Certificate Number:</strong>
+                @Model.CertificateNumber
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

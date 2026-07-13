@@ -16,15 +16,17 @@ namespace REVAACOURSES.Areas.Customer.Controllers
         private readonly IRepository<Student> _studentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepository<Question> _questionRepository;
+        private readonly IRepository<QuizResult> _quizResultRepository;
         private readonly IRepository<StudentProgress> _progressRepository;
         private readonly IRepository<Lesson> _lessonRepository;
         private readonly IRepository<Certificate> _certificateRepository;
-        public QuizController(IRepository<Quiez> quizRepository, IRepository<Student> studentRepository, UserManager<ApplicationUser> userManager, IRepository<Question> questionRepository, IRepository<StudentProgress> progressRepository, IRepository<Lesson> lessonRepository, IRepository<Certificate> certificateRepository)
+        public QuizController(IRepository<Quiez> quizRepository, IRepository<Student> studentRepository, UserManager<ApplicationUser> userManager, IRepository<Question> questionRepository, IRepository<QuizResult> quizResultRepository, IRepository< StudentProgress> progressRepository, IRepository<Lesson> lessonRepository, IRepository<Certificate> certificateRepository)
         {
             _quizRepository = quizRepository;
             _studentRepository = studentRepository;
             _userManager = userManager;
             _questionRepository = questionRepository;
+            _quizResultRepository = quizResultRepository;
             _progressRepository = progressRepository;
             _lessonRepository = lessonRepository;
             _certificateRepository = certificateRepository;
@@ -38,8 +40,35 @@ namespace REVAACOURSES.Areas.Customer.Controllers
                 includes: [q => q.Questions]);
 
             if (quiz == null)
-            {
                 return NotFound();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return NotFound();
+
+            var student = await _studentRepository.GetOneAsync(s => s.UserId == user.Id);
+
+            if (student == null)
+                return NotFound();
+
+            var lesson = await _lessonRepository.GetOneAsync(l => l.Id == quiz.LessonId);
+
+            if (lesson == null)
+                return NotFound();
+
+            var result = await _quizResultRepository.GetOneAsync(r =>
+                r.StudentId == student.Id &&
+                r.QuizId == quiz.Id);
+
+            if (result != null)
+            {
+                TempData["Error-Notification"] = "You have already submitted this quiz.";
+
+                return RedirectToAction("Lessons", "MyLearning", new
+                {
+                    courseId = lesson.CourseId
+                });
             }
 
             return View(quiz);
@@ -65,6 +94,39 @@ namespace REVAACOURSES.Areas.Customer.Controllers
                         score++;
                     }
                 }
+            }
+
+            var user1 = await _userManager.GetUserAsync(User);
+
+            if (user1 == null)
+            {
+                return NotFound();
+            }
+
+            var student1 = await _studentRepository.GetOneAsync(s => s.UserId == user1.Id);
+
+            if (student1 == null)
+            {
+                return NotFound();
+            }
+
+            // هل الطالب حل الكويز قبل كده؟
+            var result = await _quizResultRepository.GetOneAsync(r =>
+                r.StudentId == student1.Id &&
+                r.QuizId == quiz.Id);
+
+            if (result == null)
+            {
+                await _quizResultRepository.AddAsync(new QuizResult
+                {
+                    StudentId = student1.Id,
+                    QuizId = quiz.Id,
+                    Score = score,
+                    Passed = score == quiz.Questions.Count,
+                    SubmittedAt = DateTime.Now
+                });
+
+                await _quizResultRepository.CommitAsync();
             }
 
             if (score == quiz.Questions.Count)
@@ -124,7 +186,7 @@ namespace REVAACOURSES.Areas.Customer.Controllers
                                     {
                                         StudentId = student.Id,
                                         CourseId = lesson.CourseId,
-                                        CertificateNumber = Guid.NewGuid().ToString()
+                                        CertificateNumber = "CERT-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper()
                                     });
 
                                     await _certificateRepository.CommitAsync();

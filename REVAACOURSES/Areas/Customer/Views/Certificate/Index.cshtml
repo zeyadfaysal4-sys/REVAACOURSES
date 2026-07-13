@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Certificate>
+
+@{
+    ViewData["Title"] = "My Certificates";
+}
+
+<div class="container mt-5">
+
+    <h2>🏆 My Certificates</h2>
+
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            You don't have any certificates yet.
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>Course</th>
+                    <th>Certificate Number</th>
+                    <th>Issue Date</th>
+                    <th>View</th>
+                    <th>Download</th>
+
+                    <th></th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.Course.Title</td>
+
+                        <td>@item.CertificateNumber</td>
+
+                        <td>@item.IssueDate.ToShortDateString()</td>
+
+                        <td>
+
+                            <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-success">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                        <td>
+
+                            <a asp-action="Download"
+                               asp-route-id="@item.Id"
+                               class="btn btn-primary mt-3">
+
+                                📄 Download PDF
+
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    }
+
+</div>

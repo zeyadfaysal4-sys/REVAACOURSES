@@ -242,7 +242,9 @@ namespace REVAACOURSES.Areas.Customer.Controllers
                 await _enrollmentRepository.CommitAsync();
                 await _cartRepository.CommitAsync();
 
-                return Content("Everything is OK");
+                TempData["Success-Notification"] = "Payment completed successfully.|| Go to Page My Courses";
+
+                return RedirectToAction("Index", "Home", new { area = "Customer" });
             }
             catch (Exception ex)
             {

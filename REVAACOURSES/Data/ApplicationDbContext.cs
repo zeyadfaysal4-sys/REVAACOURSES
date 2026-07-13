@@ -15,6 +15,7 @@ namespace REVAACOURSES.Data
         public DbSet<Quiez> Quiezs { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<QuizResult> QuizResults { get; set; }
 
         public DbSet<StudentProgress> StudentProgresses { get; set; }
 
