@@ -59,6 +59,7 @@ namespace REVAACOURSES.Areas.Identity.Controllers
                 return View(registerVM);
             }
 
+
             TempData["Success-Notification"] = "User Created Successfully ";
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var link = Url.Action(nameof(ConfirmEmail), "Account", new { area = "Identity", userId = user.Id, token }, Request.Scheme);
@@ -69,6 +70,10 @@ namespace REVAACOURSES.Areas.Identity.Controllers
             {
                 UserId = user.Id
             };
+
+            await _studentRepository.AddAsync(student);
+            await _studentRepository.CommitAsync();
+
             return RedirectToAction(nameof(Login));
         }
         [HttpGet]

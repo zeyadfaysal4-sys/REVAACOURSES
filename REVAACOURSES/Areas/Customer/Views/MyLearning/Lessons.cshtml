@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Lesson>
+
+@using REVAACOURSES.Models
+
+@{
+    ViewData["Title"] = "Lessons";
+
+    var progress = ViewBag.Progress as IEnumerable<StudentProgress>;
+    var quizzes = ViewBag.Quizzes as IEnumerable<Quiez>;
+}
+
+<div class="container mt-5">
+
+    <h2>@ViewBag.CourseTitle</h2>
+
+    <hr />
+
+    @foreach (var lesson in Model)
+    {
+        var completed = progress != null &&
+                        progress.Any(p => p.LessonId == lesson.Id && p.IsCompleted);
+
+        var quiz = quizzes?.FirstOrDefault(q => q.LessonId == lesson.Id);
+
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+                <h4>@lesson.Title</h4>
+
+                <p>@lesson.Description</p>
+
+                @if (completed)
+                {
+                    <span class="badge bg-success mb-3 fs-6">
+                        ✅ Completed
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-warning text-dark mb-3 fs-6">
+                        ⏳ Not Completed
+                    </span>
+                }
+
+                <br />
+
+                <a asp-action="Watch"
+                   asp-route-lessonId="@lesson.Id"
+                   class="btn btn-primary">
+
+                    ▶ Watch Video
+
+                </a>
+
+                @if (quiz != null)
+                {
+                    <a asp-controller="Quiz"
+                       asp-action="Start"
+                       asp-route-id="@quiz.Id"
+                       class="btn btn-success">
+
+                        📝 Take Quiz
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+    }
+
+</div>

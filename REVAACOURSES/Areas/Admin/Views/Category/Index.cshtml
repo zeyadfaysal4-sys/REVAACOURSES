@@ -1,101 +1,142 @@
 ﻿@using REVAACOURSES.Models
 @using REVAACOURSES.Utiltes
 @model IEnumerable<Category>
+
 <div class="container">
-	<div class="row mb-3 align-items-center my-3">
-		<div class="col-md-6">
-			<h2 class="display-6">All Categories</h2>
-		</div>
-		<div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
-			<a href="/Admin/Category/Create" class="btn btn-success">Create</a>
-		</div>
-	</div>
-	<div>
-		@* @Context.Request.Cookies["Success-Notification"]  *@
-       
-	</div>
-	<div class="row">
-		<div class="col-12">
 
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Name</th>
-						<th scope="col">Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model)
-					{
-						<tr>
-							<th scope="row"> @item.CategoryId</th>
-							<td>@item.Name</td>
-							<td>@item.Description</td>
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-6">
+            <h2 class="display-6">All Categories</h2>
+        </div>
 
-							@if (User.IsInRole(CD.SUPER_ADMIN_ROLE) || User.IsInRole(CD.ADMIN_ROLE))
-							{
-								<td>
-									<a href="/Admin/Category/Update/@item.CategoryId" type="button" class="btn btn-warning">Update</a>
-									<a href="/Admin/Category/Delete/@item.CategoryId"
-										   class="btn btn-danger btn-delete">
-										Delete
-									</a>
-								</td>
-							}
-							else
-							{
-								<td>
+        <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+            <a asp-action="Create" class="btn btn-success">Create</a>
+        </div>
+    </div>
 
-									No Action!!
-								</td>
-							}
+    <div class="row">
+        <div class="col-12">
 
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-	</div>
+            <table class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.CategoryId</td>
+                            <td>@item.Name</td>
+                            <td>@item.Description</td>
+
+                            <td>
+
+                                @if (User.IsInRole(CD.SUPER_ADMIN_ROLE) || User.IsInRole(CD.ADMIN_ROLE))
+                                {
+                                    <div class="d-flex gap-2">
+
+                                        <a asp-action="Update"
+                                           asp-route-id="@item.CategoryId"
+                                           class="btn btn-warning">
+                                            Update
+                                        </a>
+
+                                        <form asp-action="Delete"
+                                              method="post"
+                                              class="m-0">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@item.CategoryId" />
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-delete">
+                                                Delete
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span>No Action!!</span>
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
 </div>
 
+@section Scripts
+{
+    <script>
 
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
-		const deleteButtons = document.querySelectorAll(".btn-delete");
+            document.querySelectorAll(".btn-delete").forEach(function (button) {
 
-		deleteButtons.forEach(btn => {
-			btn.addEventListener("click", function (e) {
-				e.preventDefault(); 
+                button.addEventListener("click", function (e) {
 
-				const url = this.getAttribute("href");
+                    e.preventDefault();
 
-				Swal.fire({
-					title: 'Are you sure?',
-					text: "You won't be able to revert this!",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#d33',
-					cancelButtonColor: '#3085d6',
-					confirmButtonText: 'Yes, delete it!'
-				}).then((result) => {
-					if (result.isConfirmed) {
-						window.location.href = url;
-					}
-				});
-			});
-		});
+                    let form = this.closest("form");
 
-	});
-</script>
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
 
-@section Scripts {
-	@if (@TempData["Success-Notification"] is not null)
-	{
-		<script>
-			toastr.success('@TempData["Success-Notification"]')
-		</script>
-	}
-    
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+
+                    });
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+    @if (TempData["Success-Notification"] != null)
+    {
+        <script>
+            toastr.success('@TempData["Success-Notification"]');
+        </script>
+    }
+
+    @if (TempData["Error-Notification"] != null)
+    {
+        <script>
+            toastr.error('@TempData["Error-Notification"]');
+        </script>
+    }
 }

@@ -1,10 +1,12 @@
-﻿using REVAACOURSES.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using REVAACOURSES.Models;
 using REVAACOURSES.Repositories;
 using REVAACOURSES.Utiltes;
 using REVAACOURSES.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Stripe;
 
 namespace REVAACOURSES.Areas.Admin.Controllers
@@ -16,14 +18,16 @@ namespace REVAACOURSES.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepository<Student> _studentRepository;
         private readonly IRepository<Assistant> _assistantRepository;
+        private readonly IEmailSender _emailSender;
         private readonly IRepository<Instructor> _instructorRepository;
 
-        public UserController(UserManager<ApplicationUser> userManager, IRepository<Student> studentRepository, IRepository<Assistant> assistantRepository, IRepository<Instructor> instructorRepository)
+        public UserController(UserManager<ApplicationUser> userManager, IRepository<Student> studentRepository, IRepository<Assistant> assistantRepository, IRepository<Instructor> instructorRepository, IEmailSender emailSender)
         {
             _userManager = userManager;
             _studentRepository = studentRepository;
             _assistantRepository = assistantRepository;
             _instructorRepository = instructorRepository;
+            _emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()
@@ -47,6 +51,87 @@ namespace REVAACOURSES.Areas.Admin.Controllers
                 });
             }
             return View(usersVM);
+        }
+
+        [HttpGet]
+        public IActionResult CreateEmployee()
+        {
+            return View(new CreateEmployeeVM());
+        }
+
+        [Authorize(Roles = $"{CD.SUPER_ADMIN_ROLE},{CD.ADMIN_ROLE}")]
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployee(CreateEmployeeVM employeeVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error-Notification"] = "Invalid Data";
+                return View(employeeVM);
+            }
+
+            var employee = new ApplicationUser()
+            {
+                UserName = employeeVM.UserName,
+                Email = employeeVM.Email,
+                Name = employeeVM.Name,
+                PhoneNumber = employeeVM.PhoneNumber,
+                Address = employeeVM.Address
+            };
+            var result = await _userManager.CreateAsync(employee, employeeVM.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(employeeVM);
+            }
+            await _userManager.AddToRoleAsync(employee, employeeVM.Role);
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(employee);
+
+            var link = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new
+                {
+                    area = "Identity",
+                    userId = employee.Id,
+                    token = token
+                },
+                Request.Scheme);
+
+            await _emailSender.SendEmailAsync(
+                employee.Email,
+                "Confirm Your Email",
+                $"<h1>Click <a href='{link}'>here</a> to confirm your email.</h1>");
+
+
+            if (employeeVM.Role == CD.INSTRUCTOR_ROLE)
+            {
+                await _instructorRepository.AddAsync(new Instructor
+                {
+                    UserId = employee.Id,
+                    Bio = employeeVM.Bio
+                });
+
+                await _instructorRepository.CommitAsync();
+            }
+
+            if (employeeVM.Role == CD.ASSISTANT_ROLE)
+            {
+                await _assistantRepository.AddAsync(new Assistant
+                {
+                    UserId = employee.Id
+                });
+
+                await _assistantRepository.CommitAsync();
+            }
+
+            TempData["Success-Notification"] = "Employee created successfully";
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         public async Task<IActionResult> LockUnLock(string id)
@@ -101,6 +186,8 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             return View(vm);
         }
 
+
+
         [HttpPost]
         [Authorize(Roles = $"{CD.ADMIN_ROLE},{CD.SUPER_ADMIN_ROLE}")]
         public async Task<IActionResult> ChangeRole(string id, List<string> roles)
@@ -132,21 +219,21 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             if (student != null)
             {
-                 _studentRepository.DeleteAsync(student);
+                _studentRepository.DeleteAsync(student);
             }
 
             var instructor = await _instructorRepository.GetOneAsync(i => i.UserId == user.Id);
 
             if (instructor != null)
             {
-                 _instructorRepository.DeleteAsync(instructor);
+                _instructorRepository.DeleteAsync(instructor);
             }
 
             var assistant = await _assistantRepository.GetOneAsync(a => a.UserId == user.Id);
 
             if (assistant != null)
             {
-                 _assistantRepository.DeleteAsync(assistant);
+                _assistantRepository.DeleteAsync(assistant);
             }
 
             await _userManager.RemoveFromRolesAsync(user, currentRoles);

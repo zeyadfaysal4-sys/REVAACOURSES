@@ -1,0 +1,46 @@
+﻿@model Instructor
+
+@{
+    ViewData["Title"] = "Update Instructor";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+            <h3>Update Instructor</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Update" method="post">
+
+                <input asp-for="Id" hidden />
+                <input asp-for="UserId" hidden />
+
+                <div class="mb-3">
+                    <label asp-for="Bio" class="form-label"></label>
+                    <textarea asp-for="Bio" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Bio" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    Update
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

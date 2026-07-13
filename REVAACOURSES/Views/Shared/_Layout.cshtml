@@ -60,9 +60,10 @@
 
                         <li class="nav-item">
                             <a class="nav-link text-dark"
-                               asp-controller="Home"
-                               asp-action="Privacy">
-                                Privacy
+                               asp-area="Customer"
+                               asp-controller="MyLearning"
+                               asp-action="Index">
+                                My Courses
                             </a>
                         </li>
 
@@ -136,8 +137,8 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 REVAACOURSES -
-            <a asp-controller="Home" asp-action="Privacy">
-                Privacy
+            <a asp-area="Customer" asp-controller="Quiz" asp-action="Start">
+                Quiz
             </a>
         </div>
     </footer>

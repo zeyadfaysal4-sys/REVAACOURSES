@@ -1,0 +1,68 @@
+﻿@model Lesson
+
+@{
+    ViewData["Title"] = "Watch Lesson";
+
+    var videoUrl = Model.VideoUrl;
+
+    if (!string.IsNullOrEmpty(videoUrl))
+    {
+        // تحويل رابط watch إلى embed
+        if (videoUrl.Contains("watch?v="))
+        {
+            videoUrl = videoUrl.Replace("watch?v=", "embed/");
+        }
+
+        // تحويل playlist
+        if (videoUrl.Contains("&list="))
+        {
+            videoUrl = videoUrl.Replace("&list=", "?list=");
+        }
+
+        // تحويل رابط youtu.be
+        if (videoUrl.Contains("youtu.be/"))
+        {
+            videoUrl = videoUrl.Replace("https://youtu.be/", "https://www.youtube.com/embed/");
+        }
+    }
+}
+
+<div class="container mt-5">
+
+    <h2>@Model.Title</h2>
+
+    <hr />
+
+    <p>@Model.Description</p>
+
+    <div class="ratio ratio-16x9 mb-4">
+
+        <iframe src="@videoUrl"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+
+    </div>
+
+    @if (ViewBag.QuizId != null)
+    {
+        <a asp-controller="Quiz"
+           asp-action="Start"
+           asp-route-id="@ViewBag.QuizId"
+           class="btn btn-success">
+
+            📝 Take Quiz
+
+        </a>
+    }
+
+    <a asp-action="Lessons"
+       asp-route-courseId="@Model.CourseId"
+       class="btn btn-secondary">
+
+        Back
+
+    </a>
+
+</div>

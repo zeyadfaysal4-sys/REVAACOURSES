@@ -242,8 +242,6 @@ namespace REVAACOURSES.Areas.Customer.Controllers
                 await _enrollmentRepository.CommitAsync();
                 await _cartRepository.CommitAsync();
 
-
-
                 return Content("Everything is OK");
             }
             catch (Exception ex)

@@ -1,0 +1,162 @@
+﻿@using REVAACOURSES.Utiltes
+@model REVAACOURSES.ViewModels.CreateEmployeeVM
+
+<div class="container mt-4">
+
+    <div class="card shadow-lg">
+
+        <div class="card-header bg-primary text-white">
+            <h3>
+                <i class="fas fa-user-plus"></i>
+                Create Employee
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="CreateEmployee" method="post">
+
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="UserName" class="form-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label"></label>
+                        <input asp-for="Address" class="form-control" placeholder="Enter Address" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label asp-for="Role" class="form-label"></label>
+
+                        <select asp-for="Role" class="form-select" id="Role">
+
+                            <option value="">-- Select Role --</option>
+
+                            <option value="@CD.ADMIN_ROLE">
+                                Admin
+                            </option>
+
+                            <option value="@CD.INSTRUCTOR_ROLE">
+                                Instructor
+                            </option>
+
+                            <option value="@CD.ASSISTANT_ROLE">
+                                Assistant
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Role" class="text-danger"></span>
+
+                    </div>
+
+                    <!-- Bio يظهر للـ Instructor فقط -->
+                    <div class="col-md-12 mb-3" id="bioDiv" style="display:none;">
+
+                        <label asp-for="Bio" class="form-label"></label>
+
+                        <textarea asp-for="Bio"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Enter Instructor Bio"></textarea>
+
+                        <span asp-validation-for="Bio" class="text-danger"></span>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="text-end">
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+
+                        <i class="fas fa-save"></i>
+
+                        Create Employee
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        function toggleBio() {
+
+            var role = document.getElementById("Role").value;
+            var bioDiv = document.getElementById("bioDiv");
+
+            if (role === "@CD.INSTRUCTOR_ROLE") {
+
+                bioDiv.style.display = "block";
+
+            } else {
+
+                bioDiv.style.display = "none";
+
+            }
+
+        }
+
+        document.getElementById("Role").addEventListener("change", toggleBio);
+
+        window.onload = toggleBio;
+
+    </script>
+}

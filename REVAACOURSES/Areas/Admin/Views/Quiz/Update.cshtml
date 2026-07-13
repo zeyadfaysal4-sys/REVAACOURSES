@@ -1,0 +1,71 @@
+﻿@model REVAACOURSES.Models.Quiez
+
+@{
+    ViewData["Title"] = "Update Quiz";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+            <h3>Update Quiz</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Update" method="post">
+
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Title" class="form-label"></label>
+
+                    <input asp-for="Title" class="form-control" />
+
+                    <span asp-validation-for="Title" class="text-danger"></span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="LessonId" class="form-label"></label>
+
+                    <select asp-for="LessonId" class="form-select">
+
+                        @foreach (var lesson in ViewBag.Lessons)
+                        {
+                            <option value="@lesson.Id">
+                                @lesson.Title
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="LessonId" class="text-danger"></span>
+
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    Update
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

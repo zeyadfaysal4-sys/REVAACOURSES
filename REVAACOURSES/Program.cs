@@ -46,6 +46,11 @@ namespace REVAACOURSES
             builder.Services.AddScoped<IRepository<Enrollment>, Repository<Enrollment>>();
             builder.Services.AddScoped<IRepository<Instructor>, Repository<Instructor>>();
             builder.Services.AddScoped<IRepository<Payment>, Repository<Payment>>();
+            builder.Services.AddScoped<IRepository<Instructor>, Repository<Instructor>>();
+            builder.Services.AddScoped<IRepository<Lesson>, Repository<Lesson>>();
+            builder.Services.AddScoped<IRepository<Question>, Repository<Question>>();
+            builder.Services.AddScoped<IRepository<StudentProgress>, Repository<StudentProgress>>();
+            builder.Services.AddScoped<IRepository<Certificate>, Repository<Certificate>>();
             builder.Services.AddScoped<IRepository<Quiez>, Repository<Quiez>>();
             builder.Services.AddScoped<IRepository<Cart>, Repository<Cart>>();
             builder.Services.AddScoped<IRepository<ApplicationUserOTP>, Repository<ApplicationUserOTP>>();

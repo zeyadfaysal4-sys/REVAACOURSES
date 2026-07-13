@@ -12,6 +12,13 @@
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int? InstructorId { get; set; }
+
+        public Instructor? Instructor { get; set; }
+
+        public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+
+        public ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
 
     }
 }

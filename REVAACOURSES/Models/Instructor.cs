@@ -9,8 +9,6 @@
         public ApplicationUser User { get; set; }
 
         public string Bio { get; set; }
-        public string PhotoUrl { get; set; }
-
-        public ICollection<Course> Courses { get; set; }
+        public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }

@@ -1,0 +1,101 @@
+﻿@model REVAACOURSES.Models.Question
+
+@{
+    ViewData["Title"] = "Create Question";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3>Create Question</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="QuestionText" class="form-label"></label>
+                    <textarea asp-for="QuestionText" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="QuestionText" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="OptionA" class="form-label"></label>
+                    <input asp-for="OptionA" class="form-control" />
+                    <span asp-validation-for="OptionA" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="OptionB" class="form-label"></label>
+                    <input asp-for="OptionB" class="form-control" />
+                    <span asp-validation-for="OptionB" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="OptionC" class="form-label"></label>
+                    <input asp-for="OptionC" class="form-control" />
+                    <span asp-validation-for="OptionC" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="OptionD" class="form-label"></label>
+                    <input asp-for="OptionD" class="form-control" />
+                    <span asp-validation-for="OptionD" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CorrectAnswer" class="form-label"></label>
+
+                    <select asp-for="CorrectAnswer"
+                            asp-items="Html.GetEnumSelectList<AnswerOption>()"
+                            class="form-select">
+                    </select>
+
+                    <span asp-validation-for="CorrectAnswer" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="QuizId" class="form-label"></label>
+
+                    <select asp-for="QuizId" class="form-select">
+
+                        <option value="">-- Select Quiz --</option>
+
+                        @foreach (var quiz in ViewBag.Quizzes)
+                        {
+                            <option value="@quiz.Id">
+                                @quiz.Title
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="QuizId" class="text-danger"></span>
+
+                </div>
+
+                <button class="btn btn-success">
+                    Create
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

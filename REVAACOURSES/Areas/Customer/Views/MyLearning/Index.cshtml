@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Enrollment>
+
+@{
+    ViewData["Title"] = "My Courses";
+}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">
+        My Courses
+    </h2>
+
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+
+                <div class="card mb-4 shadow">
+
+                    <div class="card-body">
+
+                        <h4>@item.Course.Title</h4>
+
+                        <p>
+                            @item.Course.Description
+                        </p>
+
+                        <a asp-action="Lessons"
+                           asp-route-courseId="@item.CourseId"
+                           class="btn btn-primary">
+
+                            Open Course
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>

@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Quiz Result";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            <h2>Quiz Result</h2>
+        </div>
+
+        <div class="card-body text-center">
+
+            <h3>
+                Your Score:
+            </h3>
+
+            <h1 class="display-4">
+                @ViewBag.Score / @ViewBag.Total
+            </h1>
+
+            @if (ViewBag.Score >= (ViewBag.Total / 2.0))
+            {
+                <div class="alert alert-success">
+                    🎉 Congratulations! You Passed.
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    ❌ Sorry, You Failed.
+                </div>
+            }
+
+            <a asp-controller="MyLearning"
+               asp-action="Index"
+               class="btn btn-primary">
+                Back To My Courses
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

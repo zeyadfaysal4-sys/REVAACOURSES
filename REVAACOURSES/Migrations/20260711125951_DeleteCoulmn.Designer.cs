@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using REVAACOURSES.Data;
 
@@ -11,9 +12,11 @@ using REVAACOURSES.Data;
 namespace REVAACOURSES.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260711125951_DeleteCoulmn")]
+    partial class DeleteCoulmn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -565,7 +568,7 @@ namespace REVAACOURSES.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AssistantId")
+                    b.Property<int>("AssistantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -834,15 +837,19 @@ namespace REVAACOURSES.Migrations
 
             modelBuilder.Entity("REVAACOURSES.Models.Quiez", b =>
                 {
-                    b.HasOne("REVAACOURSES.Models.Assistant", null)
+                    b.HasOne("REVAACOURSES.Models.Assistant", "Assistant")
                         .WithMany("Quizzes")
-                        .HasForeignKey("AssistantId");
+                        .HasForeignKey("AssistantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("REVAACOURSES.Models.Lesson", "Lesson")
                         .WithOne("Quiz")
                         .HasForeignKey("REVAACOURSES.Models.Quiez", "LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Assistant");
 
                     b.Navigation("Lesson");
                 });
