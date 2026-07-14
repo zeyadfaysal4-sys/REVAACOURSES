@@ -1,69 +1,56 @@
-﻿<div class="container mt-4">
+﻿<div class="card shadow border-0">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="fas fa-user-graduate me-2"></i>Enrollments
+        </h4>
+    </div>
 
-    <h2 class="mb-4">Check Student Enrollment</h2>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="fas fa-user me-1"></i> Student</th>
+                        <th><i class="fas fa-book me-1"></i> Course</th>
+                        <th><i class="fas fa-calendar-alt me-1"></i> Enrollment Date</th>
+                        <th><i class="fas fa-check-circle me-1"></i> Status</th>
+                    </tr>
+                </thead>
 
-    <form asp-action="CheckStudent" method="get">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Student.User.Name</td>
 
-        <!-- Students -->
-        <div class="mb-3">
-            <label class="form-label">Select Student</label>
+                            <td>
+                                <span class="fw-bold text-primary">
+                                    @item.Course.Title
+                                </span>
+                            </td>
 
-            <select name="studentId" class="form-select">
+                            <td>
+                                @item.EnrollmentDate.ToString("dd/MM/yyyy")
+                            </td>
 
-                <option disabled selected>
-                    -- Select Student --
-                </option>
-
-                @foreach (var item in ViewBag.Students)
-                {
-                    <option value="@item.Id">
-                        @item.User.Name
-                    </option>
-                }
-
-            </select>
+                            <td>
+                                @if (item.status)
+                                {
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+                                        Inactive
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-
-        <!-- Courses -->
-        <div class="mb-3">
-            <label class="form-label">Select Course</label>
-
-            <select name="courseId" class="form-select">
-
-                <option disabled selected>
-                    -- Select Course --
-                </option>
-
-                @foreach (var item in ViewBag.Courses)
-                {
-                    <option value="@item.Id">
-                        @item.Title
-                    </option>
-                }
-
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-            Check Enrollment
-        </button>
-
-    </form>
-
-    <br />
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Success"]
-        </div>
-    }
-
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["Error"]
-        </div>
-    }
-
+    </div>
 </div>

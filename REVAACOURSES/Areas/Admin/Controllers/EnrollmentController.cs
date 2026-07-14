@@ -22,17 +22,19 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
         }
+            //ViewBag.Students = await _studentRepository.GetAsync(
+            //    includes: [s => s.User]
+            //);
+
+            //ViewBag.Courses = await _courseRepository.GetAsync();
 
         public async Task<IActionResult> Index()
         {
            
-            ViewBag.Students = await _studentRepository.GetAsync(
-                includes: [s => s.User]
-            );
 
-            ViewBag.Courses = await _courseRepository.GetAsync();
+            var enrollments = await _enrollmentRepository.GetAsync(includes: [s => s.Student,s=>s.Student.User,s => s.Course]);
 
-            return View();
+            return View(enrollments.AsQueryable());
         }
 
         [HttpGet]
