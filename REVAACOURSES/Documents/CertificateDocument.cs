@@ -39,7 +39,7 @@ namespace REVAACOURSES.Documents
                         column.Item()
                             .AlignCenter()
                             .Width(70)
-                            .Image("wwwroot/Images/logo.png");
+                            .Image("wwwroot/Images/Logo.png");
 
                         // Title
                         column.Item()
@@ -96,7 +96,7 @@ namespace REVAACOURSES.Documents
 
                             row.ConstantItem(110)
                                 .AlignMiddle()
-                                .Image("wwwroot/Images/stamp.png");
+                                .Image("wwwroot/Images/Stamp.png");
                         });
                     });
             });

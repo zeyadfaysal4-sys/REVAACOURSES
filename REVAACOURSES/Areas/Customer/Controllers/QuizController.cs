@@ -14,16 +14,18 @@ namespace REVAACOURSES.Areas.Customer.Controllers
     {
         private readonly IRepository<Quiez> _quizRepository;
         private readonly IRepository<Student> _studentRepository;
+        private readonly IRepository<Enrollment> _enrollmentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepository<Question> _questionRepository;
         private readonly IRepository<QuizResult> _quizResultRepository;
         private readonly IRepository<StudentProgress> _progressRepository;
         private readonly IRepository<Lesson> _lessonRepository;
         private readonly IRepository<Certificate> _certificateRepository;
-        public QuizController(IRepository<Quiez> quizRepository, IRepository<Student> studentRepository, UserManager<ApplicationUser> userManager, IRepository<Question> questionRepository, IRepository<QuizResult> quizResultRepository, IRepository< StudentProgress> progressRepository, IRepository<Lesson> lessonRepository, IRepository<Certificate> certificateRepository)
+        public QuizController(IRepository<Quiez> quizRepository, IRepository<Student> studentRepository, IRepository<Enrollment> enrollmentRepository, UserManager<ApplicationUser> userManager, IRepository<Question> questionRepository, IRepository<QuizResult> quizResultRepository, IRepository< StudentProgress> progressRepository, IRepository<Lesson> lessonRepository, IRepository<Certificate> certificateRepository)
         {
             _quizRepository = quizRepository;
             _studentRepository = studentRepository;
+            _enrollmentRepository = enrollmentRepository;
             _userManager = userManager;
             _questionRepository = questionRepository;
             _quizResultRepository = quizResultRepository;
@@ -35,40 +37,38 @@ namespace REVAACOURSES.Areas.Customer.Controllers
         [HttpGet]
         public async Task<IActionResult> Start(int id)
         {
-            var quiz = await _quizRepository.GetOneAsync(
-                q => q.Id == id,
-                includes: [q => q.Questions]);
+            var quiz = await _quizRepository.GetOneAsync(q => q.Id == id, includes: [q => q.Questions]);
 
             if (quiz == null)
+            {
                 return NotFound();
+            }
 
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null)
+            {
                 return NotFound();
+            }
 
             var student = await _studentRepository.GetOneAsync(s => s.UserId == user.Id);
 
             if (student == null)
+            {
                 return NotFound();
+            }
 
             var lesson = await _lessonRepository.GetOneAsync(l => l.Id == quiz.LessonId);
 
             if (lesson == null)
-                return NotFound();
-
-            var result = await _quizResultRepository.GetOneAsync(r =>
-                r.StudentId == student.Id &&
-                r.QuizId == quiz.Id);
-
-            if (result != null)
             {
-                TempData["Error-Notification"] = "You have already submitted this quiz.";
+                return NotFound();
+            }
+            var enrollment = await _enrollmentRepository.GetOneAsync(e => e.StudentId == student.Id & e.CourseId == lesson.CourseId);
 
-                return RedirectToAction("Lessons", "MyLearning", new
-                {
-                    courseId = lesson.CourseId
-                });
+            if (enrollment == null)
+            {
+                return Forbid();
             }
 
             return View(quiz);
@@ -110,88 +110,69 @@ namespace REVAACOURSES.Areas.Customer.Controllers
                 return NotFound();
             }
 
-            // هل الطالب حل الكويز قبل كده؟
-            var result = await _quizResultRepository.GetOneAsync(r =>
-                r.StudentId == student1.Id &&
-                r.QuizId == quiz.Id);
-
-            if (result == null)
+            await _quizResultRepository.AddAsync(new QuizResult
             {
-                await _quizResultRepository.AddAsync(new QuizResult
-                {
-                    StudentId = student1.Id,
-                    QuizId = quiz.Id,
-                    Score = score,
-                    Passed = score == quiz.Questions.Count,
-                    SubmittedAt = DateTime.Now
-                });
+                StudentId = student1.Id,
+                QuizId = quiz.Id,
+                Score = score,
+                Passed = score == quiz.Questions.Count,
+                SubmittedAt = DateTime.Now
+            });
 
-                await _quizResultRepository.CommitAsync();
-            }
+            await _quizResultRepository.CommitAsync();
 
-            if (score == quiz.Questions.Count)
+            var lesson = await _lessonRepository.GetOneAsync(l => l.Id == quiz.LessonId);
+
+            if (lesson != null)
             {
-                var user = await _userManager.GetUserAsync(User);
+                var progress = await _progressRepository.GetOneAsync(p =>
+                    p.StudentId == student1.Id &&
+                    p.LessonId == lesson.Id);
 
-                if (user != null)
+                if (progress == null)
                 {
-                    var student = await _studentRepository.GetOneAsync(s => s.UserId == user.Id);
-
-                    if (student != null)
+                    await _progressRepository.AddAsync(new StudentProgress
                     {
-                        var lesson = await _lessonRepository.GetOneAsync(l => l.Id == quiz.LessonId);
+                        StudentId = student1.Id,
+                        LessonId = lesson.Id,
+                        IsCompleted = true,
+                        CompletedAt = DateTime.Now
+                    });
 
-                        if (lesson != null)
+                    await _progressRepository.CommitAsync();
+                }
+
+                // إصدار الشهادة فقط إذا الطالب نجح في الكويز
+                if (score == quiz.Questions.Count)
+                {
+                    // جميع دروس الكورس
+                    var allLessons = await _lessonRepository.GetAsync(l => l.CourseId == lesson.CourseId);
+
+                    // الدروس المكتملة للطالب
+                    var completedLessons = await _progressRepository.GetAsync(p =>
+                        p.StudentId == student1.Id && p.IsCompleted);
+
+                    // هل أكمل كل الدروس؟
+                    bool finishedCourse = allLessons.All(l =>
+                        completedLessons.Any(p => p.LessonId == l.Id));
+
+                    if (finishedCourse)
+                    {
+                        var certificate = await _certificateRepository.GetOneAsync(c =>
+                            c.StudentId == student1.Id &&
+                            c.CourseId == lesson.CourseId);
+
+                        if (certificate == null)
                         {
-                            // تسجيل إنه خلص الدرس
-                            var progress = await _progressRepository.GetOneAsync(p =>
-                                p.StudentId == student.Id &&
-                                p.LessonId == lesson.Id);
-
-                            if (progress == null)
+                            await _certificateRepository.AddAsync(new Certificate
                             {
-                                await _progressRepository.AddAsync(new StudentProgress
-                                {
-                                    StudentId = student.Id,
-                                    LessonId = lesson.Id,
-                                    IsCompleted = true,
-                                    CompletedAt = DateTime.Now
-                                });
+                                StudentId = student1.Id,
+                                CourseId = lesson.CourseId,
+                                CertificateNumber = "CERT-" +
+                                    Guid.NewGuid().ToString().Substring(0, 8).ToUpper()
+                            });
 
-                                await _progressRepository.CommitAsync();
-                            }
-
-                            // جميع دروس الكورس
-                            var allLessons = await _lessonRepository.GetAsync(l =>
-                                l.CourseId == lesson.CourseId);
-
-                            // الدروس المكتملة للطالب
-                            var completedLessons = await _progressRepository.GetAsync(p =>
-                                p.StudentId == student.Id &&
-                                p.IsCompleted);
-
-                            // هل خلص الكورس؟
-                            bool finishedCourse = allLessons.All(l =>
-                                completedLessons.Any(p => p.LessonId == l.Id));
-
-                            if (finishedCourse)
-                            {
-                                var certificate = await _certificateRepository.GetOneAsync(c =>
-                                    c.StudentId == student.Id &&
-                                    c.CourseId == lesson.CourseId);
-
-                                if (certificate == null)
-                                {
-                                    await _certificateRepository.AddAsync(new Certificate
-                                    {
-                                        StudentId = student.Id,
-                                        CourseId = lesson.CourseId,
-                                        CertificateNumber = "CERT-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper()
-                                    });
-
-                                    await _certificateRepository.CommitAsync();
-                                }
-                            }
+                            await _certificateRepository.CommitAsync();
                         }
                     }
                 }

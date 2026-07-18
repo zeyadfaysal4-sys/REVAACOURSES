@@ -17,7 +17,6 @@ namespace REVAACOURSES.Areas.Customer.Controllers
         private readonly IRepository<Student> _studentRepository;
         private readonly IRepository<Quiez> _quizRepository;
         private readonly IRepository<StudentProgress> _progressRepository;
-
         private readonly IRepository<Lesson> _lessonRepository;
         public MyLearningController(IRepository<Enrollment> enrollmentRepository, IRepository<Course> courseRepository, UserManager<ApplicationUser> userManager, IRepository<Student> studentRepository, IRepository<Lesson> lessonRepository, IRepository<Quiez> quizRepository, IRepository<StudentProgress> progressRepository)
         {
@@ -67,6 +66,13 @@ namespace REVAACOURSES.Areas.Customer.Controllers
             if (course == null)
                 return NotFound();
 
+            var enrollment = await _enrollmentRepository.GetOneAsync(e => e.StudentId == student.Id && e.CourseId == courseId);
+
+            if (enrollment == null)
+            {
+                return Forbid();
+            }
+
             var lessons = await _lessonRepository.GetAsync(l => l.CourseId == courseId);
 
             var progress = await _progressRepository.GetAsync(p => p.StudentId == student.Id);
@@ -82,13 +88,27 @@ namespace REVAACOURSES.Areas.Customer.Controllers
 
         public async Task<IActionResult> Watch(int lessonId)
         {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return NotFound();
+
+            var student = await _studentRepository.GetOneAsync(s => s.UserId == user.Id);
+
+            if (student == null)
+                return NotFound();
             var lesson = await _lessonRepository.GetOneAsync(l => l.Id == lessonId);
 
             if (lesson == null)
             {
                 return NotFound();
             }
+            var enrollment = await _enrollmentRepository.GetOneAsync(e =>e.StudentId == student.Id &&e.CourseId == lesson.CourseId);
 
+            if (enrollment == null)
+            {
+                return Forbid();
+            }
             var quiz = await _quizRepository.GetOneAsync(q => q.LessonId == lessonId);
             ViewBag.QuizId = quiz?.Id;
             return View(lesson);

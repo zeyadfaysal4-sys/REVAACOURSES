@@ -44,14 +44,17 @@ namespace REVAACOURSES.Areas.Customer.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var certificate = await _certificateRepository.GetOneAsync(c => c.Id == id, includes: [c => c.Course, c => c.Student, c => c.Student.User]);
+            var certificate = await _certificateRepository.GetOneAsync(
+                c => c.Id == id,
+                includes: [c => c.Course, c => c.Student, c => c.Student.User]);
 
             if (certificate == null)
-            {
                 return NotFound();
-            }
 
-            return View(certificate);
+            var document = new CertificateDocument(certificate);
+            var pdf = document.GeneratePdf();
+
+            return File(pdf, "application/pdf");
         }
         public async Task<IActionResult> Download(int id)
         {
