@@ -28,13 +28,15 @@ namespace REVAACOURSES.Areas.Customer.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound();
+                TempData["Error-Notification"] = "You need to register as a student to access your certificates.";
+                return RedirectToAction("Register", "Account", new { area = "Identity" });
             }
 
             var student = await _studentRepository.GetOneAsync(s => s.UserId == user.Id);
             if (student == null)
             {
-                return NotFound();
+                TempData["Error-Notification"] = "You need to register as a student to access your certificates.";
+                return RedirectToAction("Register", "Account", new { area = "Identity" });
             }
 
             var certificates = await _certificateRepository.GetAsync(c => c.StudentId == student.Id, includes: [c => c.Course]);

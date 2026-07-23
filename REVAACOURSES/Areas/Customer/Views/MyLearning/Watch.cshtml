@@ -28,12 +28,11 @@
 }
 
 <div class="container mt-5">
+    <h2 class="lesson-title">@Model.Title</h2>
 
-    <h2>@Model.Title</h2>
+    <hr class="border-light" />
 
-    <hr />
-
-    <p>@Model.Description</p>
+    <p class="lesson-description">@Model.Description</p>
 
     <div class="ratio ratio-16x9 mb-4">
 
@@ -66,3 +65,19 @@
     </a>
 
 </div>
+
+<style>
+
+    .lesson-title {
+        color: white;
+        font-weight: bold;
+        text-shadow: 2px 2px 10px rgba(0,0,0,.6);
+    }
+
+    .lesson-description {
+        color: white;
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+</style>

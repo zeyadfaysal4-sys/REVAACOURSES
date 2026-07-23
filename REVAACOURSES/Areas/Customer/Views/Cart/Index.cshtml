@@ -24,24 +24,10 @@
               </div>
               <div class="col-md-3 col-lg-3 col-xl-3">
                 <p class="lead fw-normal mb-2">@item.Course.Title</p>
-                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
               </div>
-              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                <a asp-action="DecrementCount" asp-route-courseId="@item.CourseId" data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                  >
-                  <i class="fas fa-minus"></i>
-                </a>
-
-                <input id="form1" min="0" name="quantity" value="@item.Count" type="number" disabled
-                  class="form-control form-control-sm" />
-
-                <a asp-action="IncrementCount" asp-route-courseId="@item.CourseId" data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                 >
-                  <i class="fas fa-plus"></i>
-                </a>
-              </div>
+        
               <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                <h5 class="mb-0">$ @(item.Price * item.Count)</h5>
+                <h5 class="mb-0">$ @(item.Price)</h5>
               </div>
               <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                 <a asp-action="DeleteCourse" asp-route-courseId="@item.CourseId"  class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
@@ -81,3 +67,66 @@
 {
     <partial name="_NotificationPartial" />
 }
+<style>
+
+h1{
+    color:white !important;
+}
+
+h3{
+    color:white !important;
+}
+
+p{
+    color:white !important;
+}
+
+label{
+    color:white !important;
+}
+
+span{
+    color:white !important;
+}
+
+a{
+    color:white;
+    text-decoration:none;
+}
+
+a:hover{
+    color:#f8f9fa;
+}
+
+.card{
+    background:rgba(255,255,255,.95);
+    border:none;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.card p{
+    color:#212529 !important;
+}
+
+.card h5{
+    color:#212529 !important;
+}
+
+.card .lead{
+    color:#212529 !important;
+}
+
+.card label{
+    color:#212529 !important;
+}
+
+.mb-0{
+    color:white !important;
+}
+
+.text-muted{
+    color:white !important;
+}
+
+</style>

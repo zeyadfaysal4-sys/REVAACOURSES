@@ -37,12 +37,12 @@ namespace REVAACOURSES.Areas.Customer.Controllers
             }
 
             var carts = await _cartRepository.GetAsync(c => c.ApplicationUserId == user, includes: [c => c.Course]);
-            var TotalPrice = carts.Sum(c => c.Price * c.Count);
+            var TotalPrice = carts.Sum(c => c.Price);
             ViewData["TotalPrice"] = TotalPrice;
 
             return View(carts);
         }
-        public async Task<IActionResult> AddToCart(int courseId, int count)
+        public async Task<IActionResult> AddToCart(int courseId)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user is null)
@@ -57,70 +57,26 @@ namespace REVAACOURSES.Areas.Customer.Controllers
             }
 
             var cartInDb = await _cartRepository.GetOneAsync(c => c.CourseId == courseId && c.ApplicationUserId == user.Id);
-
             if (cartInDb != null)
             {
-                cartInDb.Count += count;
-                await _cartRepository.CommitAsync();
+                TempData["Error-Notification"] = "This course is already in your cart.";
                 return RedirectToAction(nameof(Index));
             }
 
-            var cart = new Cart();
-
-            cart.ApplicationUserId = user.Id;
-            cart.CourseId = courseId;
-            cart.Count = count;
-            cart.Price = course.Price;
+            var cart = new Cart
+            {
+                ApplicationUserId = user.Id,
+                CourseId = courseId,
+                Count = 1,
+                Price = course.Price
+            };
 
             await _cartRepository.AddAsync(cart);
             await _cartRepository.CommitAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        public async Task<IActionResult> IncrementCount(int courseId)
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-                return NotFound();
-
-            var cartInDb = await _cartRepository.GetOneAsync(c =>
-                c.CourseId == courseId &&
-                c.ApplicationUserId == user.Id);
-
-            if (cartInDb == null)
-                return NotFound();
-
-            var course = await _courseRepository.GetOneAsync(c => c.Id == courseId);
-
-            cartInDb.Count++;
-            await _cartRepository.CommitAsync();
 
             return RedirectToAction(nameof(Index));
         }
-
-        public async Task<IActionResult> DecrementCount(int courseId)
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-                return NotFound();
-
-            var cartInDb = await _cartRepository.GetOneAsync(c =>
-                c.CourseId == courseId &&
-                c.ApplicationUserId == user.Id);
-
-            if (cartInDb == null)
-                return NotFound();
-
-            if (cartInDb.Count > 1)
-            {
-                cartInDb.Count--;
-                await _cartRepository.CommitAsync();
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
+       
         public async Task<IActionResult> DeleteCourse(int courseId)
         {
             var user = await _userManager.GetUserAsync(User);

@@ -42,7 +42,8 @@ namespace REVAACOURSES.Areas.Customer.Controllers
 
             if (student == null)
             {
-                return NotFound();
+                TempData["Error-Notification"] = "You need to register as a student to access your learning dashboard.";
+                return RedirectToAction("Register", "Account", new { area = "Identity" });
             }
 
             var enrollments = await _enrollmentRepository.GetAsync(e => e.StudentId == student.Id, includes: [e => e.Course]);
