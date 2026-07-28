@@ -40,6 +40,41 @@
     </div>
 </section>
 
+<h3 class="mt-5 text-white">Student Reviews</h3>
+@if (Model.Reviews.Any())
+{
+    @foreach (var review in Model.Reviews)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+                    <h5>@review.Student.User.Name</h5>
+                    <span>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= review.Rating)
+                            {
+                                <span class="text-warning">★</span>
+                            }
+                            else
+                            {
+                                <span class="text-secondary">☆</span>
+                            }
+                        }
+                    </span>
+                </div>
+
+                <p class="mt-2">@review.Comment</p>
+
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p class="text-muted">No reviews yet.</p>
+}
 <!-- Related items section -->
 <section class="py-5 bg-light">
 

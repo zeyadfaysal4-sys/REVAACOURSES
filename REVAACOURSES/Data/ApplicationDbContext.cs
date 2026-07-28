@@ -9,6 +9,8 @@ namespace REVAACOURSES.Data
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+
         public DbSet<ApplicationUserOTP> ApplicationUserOTPs { get; set; }
         public DbSet<Assistant> Assistants { get; set; }
         public DbSet<Course> Courses { get; set; }

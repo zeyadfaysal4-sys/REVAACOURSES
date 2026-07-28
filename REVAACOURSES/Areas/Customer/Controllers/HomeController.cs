@@ -1,8 +1,10 @@
-﻿using REVAACOURSES.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;  
+using REVAACOURSES.Models;
 using REVAACOURSES.Repositories;
 using REVAACOURSES.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;  
+using REVAACOURSES.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace REVAACOURSES.Areas.Customer.Controllers
 {
@@ -11,11 +13,16 @@ namespace REVAACOURSES.Areas.Customer.Controllers
     {
         IRepository<Course> _CourseRepository;
         IRepository<Category> _CategoryRepository;
+        IRepository<Review> _ReviewRepository;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(IRepository<Course> courseRepository, IRepository<Category> categoryRepository)
+
+        public HomeController(IRepository<Course> courseRepository, IRepository<Category> categoryRepository, IRepository<Review> reviewRepository, ApplicationDbContext context)
         {
             _CourseRepository = courseRepository;
             _CategoryRepository = categoryRepository;
+            _ReviewRepository = reviewRepository;
+            _context = context;
         }
         public async Task<IActionResult> Index(FilterCourseVM filter)
         {
@@ -66,11 +73,17 @@ namespace REVAACOURSES.Areas.Customer.Controllers
             var relatedCourses = await _CourseRepository.GetAsync(c => c.CategoryId == course.CategoryId && c.Id != id, includes: [c => c.Category]);
             relatedCourses = relatedCourses.Skip(0).Take(3);
 
-            
+            var reviews = await _context.Reviews
+                .Include(r => r.Student).ThenInclude(s => s.User)
+                .Where(r => r.CourseId == id)
+                .ToListAsync();
+
+            reviews = reviews.Skip(0).Take(3).ToList();
             return View(new RelatedWithCourse()
             {
                 Course = course,
-                RelatedCourses = relatedCourses.ToList()
+                RelatedCourses = relatedCourses.ToList(),
+                Reviews = reviews.ToList()
             });
         }
     }

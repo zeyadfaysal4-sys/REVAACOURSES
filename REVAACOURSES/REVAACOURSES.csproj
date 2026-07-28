@@ -7,6 +7,7 @@
     <UserSecretsId>e8311f89-c676-435b-895e-4bc2626e2ea9</UserSecretsId>
   </PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="CloudinaryDotNet" Version="1.29.2" />
 		<PackageReference Include="Mapster" Version="10.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />

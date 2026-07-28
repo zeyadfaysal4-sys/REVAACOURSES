@@ -7,5 +7,6 @@ namespace REVAACOURSES.ViewModels
     {
         public Course Course { get; set; }
         public List<Course> RelatedCourses { get; set; }
+        public IEnumerable<Review> Reviews { get; set; }
     }
 }

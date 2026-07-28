@@ -13,7 +13,7 @@
         public int LessonId { get; set; }
 
         public Lesson Lesson { get; set; }
-
+        
         // خلص الدرس؟
         public bool IsCompleted { get; set; } = false;
 

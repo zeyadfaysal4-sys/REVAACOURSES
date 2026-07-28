@@ -54,6 +54,8 @@ namespace REVAACOURSES
             builder.Services.AddScoped<IRepository<Certificate>, Repository<Certificate>>();
             builder.Services.AddScoped<IRepository<Quiez>, Repository<Quiez>>();
             builder.Services.AddScoped<IRepository<Cart>, Repository<Cart>>();
+            builder.Services.AddScoped<IRepository<Models.Review>, Repository<Models.Review>>();
+
             builder.Services.AddScoped<IRepository<ApplicationUserOTP>, Repository<ApplicationUserOTP>>();
             builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
             builder.Services.AddTransient<IEmailSender, EmailSender>();

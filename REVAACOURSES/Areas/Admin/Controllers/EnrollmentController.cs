@@ -15,24 +15,16 @@ namespace REVAACOURSES.Areas.Admin.Controllers
         private readonly IRepository<Student> _studentRepository;
         private readonly IRepository<Course> _courseRepository;
 
-        public EnrollmentController(
-            IRepository<Enrollment> enrollmentRepository,IRepository<Student> studentRepository, IRepository<Course> courseRepository)
+        public EnrollmentController(IRepository<Enrollment> enrollmentRepository, IRepository<Student> studentRepository, IRepository<Course> courseRepository)
         {
             _enrollmentRepository = enrollmentRepository;
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
         }
-            //ViewBag.Students = await _studentRepository.GetAsync(
-            //    includes: [s => s.User]
-            //);
-
-            //ViewBag.Courses = await _courseRepository.GetAsync();
 
         public async Task<IActionResult> Index()
         {
-           
-
-            var enrollments = await _enrollmentRepository.GetAsync(includes: [s => s.Student,s=>s.Student.User,s => s.Course]);
+            var enrollments = await _enrollmentRepository.GetAsync(includes: [s => s.Student, s => s.Student.User, s => s.Course]);
 
             return View(enrollments.AsQueryable());
         }

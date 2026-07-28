@@ -1,0 +1,155 @@
+﻿@model Review
+
+@{
+    ViewData["Title"] = "Leave Review";
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-warning text-dark text-center">
+                    <h3>
+                        ⭐ Leave a Review
+                    </h3>
+                </div>
+
+
+                <div class="card-body p-4">
+
+
+                    <form asp-action="Create" method="post">
+
+                        <input asp-for="CourseId" type="hidden" />
+
+                        <input asp-for="Rating"
+                               id="rating"
+                               type="hidden" />
+
+
+                        <div class="text-center mb-4">
+
+                            <h5>
+                                How would you rate this course?
+                            </h5>
+
+
+                            <div class="rating">
+
+                                <span data-value="1">☆</span>
+                                <span data-value="2">☆</span>
+                                <span data-value="3">☆</span>
+                                <span data-value="4">☆</span>
+                                <span data-value="5">☆</span>
+
+                            </div>
+
+
+                            <span asp-validation-for="Rating"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Your Comment
+                            </label>
+
+
+                            <textarea asp-for="Comment"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Share your experience with this course...">
+                            </textarea>
+
+
+                            <span asp-validation-for="Comment"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+
+                        <button class="btn btn-warning w-100">
+                            Submit Review ⭐
+                        </button>
+
+
+                    </form>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+
+    <script>
+
+        const stars = document.querySelectorAll(".rating span");
+        const ratingInput = document.getElementById("rating");
+
+
+        stars.forEach(star => {
+
+            star.addEventListener("click", function(){
+
+                let value = this.dataset.value;
+
+                ratingInput.value = value;
+
+
+                stars.forEach(s => {
+
+                    s.innerHTML =
+                        s.dataset.value <= value ? "★" : "☆";
+
+                });
+
+            });
+
+        });
+
+
+    </script>
+
+
+    <style>
+
+        .rating span{
+
+            font-size:45px;
+            cursor:pointer;
+            color:#ffc107;
+
+        }
+
+
+        .rating span:hover{
+
+            transform:scale(1.2);
+
+        }
+
+
+    </style>
+
+}

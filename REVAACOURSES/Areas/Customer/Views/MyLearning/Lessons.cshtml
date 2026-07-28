@@ -66,10 +66,16 @@
                 }
 
             </div>
-
+          
         </div>
     }
-
+    <a asp-area="Customer"
+       asp-controller="Review"
+       asp-action="Create"
+       asp-route-courseId="@Model.First().CourseId"
+       class="btn btn-warning">
+        ⭐ Leave a Review
+    </a>
 </div>
 
 <style>

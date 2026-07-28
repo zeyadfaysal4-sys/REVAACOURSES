@@ -10,5 +10,6 @@
         public ICollection<StudentProgress> StudentProgresses { get; set; } = new List<StudentProgress>();
 
         public ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
+        public ICollection<Review> Reviews { get; set; } = [];
     }
 }
