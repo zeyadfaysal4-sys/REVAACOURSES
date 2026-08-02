@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using REVAACOURSES.Models;
 using REVAACOURSES.Repositories;
 using REVAACOURSES.ViewModels;
+using Stripe;
 
 namespace REVAACOURSES.Areas.Customer.Controllers
 {
@@ -177,7 +178,7 @@ namespace REVAACOURSES.Areas.Customer.Controllers
                     }
                 }
             }
-
+            ViewBag.CourseId = lesson.CourseId;
             ViewBag.Score = score;
             ViewBag.Total = quiz.Questions.Count;
 

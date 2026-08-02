@@ -97,6 +97,7 @@
 							{
 
 								<td>
+									<a asp-controller="Lesson"asp-action="Index"asp-route-courseId="@item.Id"class="btn btn-info btn-sm">Lessons</a>
 									<a href="/Admin/Course/Update/@item.Id" type="button" class="btn btn-warning">Update</a>
 									<a href="/Admin/Course/Delete/@item.Id"
 									   class="btn btn-danger btn-delete">
@@ -175,3 +176,8 @@
 	});
 </script>
 
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial" />
+	<partial name="_NotificationPartial" />
+}

@@ -149,18 +149,3 @@
 	</div>
 </div>
 
-@section Scripts {
-	@if (TempData["Success-Notification"] != null)
-	{
-		<script>
-			toastr.success('@TempData["Success-Notification"]')
-		</script>
-	}
-
-	@if (TempData["Error-Notification"] != null)
-	{
-		<script>
-			toastr.error('@TempData["Error-Notification"]')
-		</script>
-	}
-}

@@ -23,9 +23,9 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             _courseRepository = courseRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int courseId)
         {
-            var lessons = await _lessonRepository.GetAsync(includes: [l => l.Course]);
+            var lessons = await _lessonRepository.GetAsync(l => l.CourseId == courseId, includes: [l => l.Course]);
             return View(lessons);
         }
 
@@ -51,7 +51,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             TempData["Success-Notification"] = "Lesson created successfully";
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Create));
         }
 
         [HttpGet]
@@ -81,7 +81,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             TempData["Success-Notification"] = "Lesson updated successfully";
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Create));
         }
 
         [HttpPost]
@@ -96,7 +96,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             _lessonRepository.DeleteAsync(lesson);
             await _lessonRepository.CommitAsync();
             TempData["Success-Notification"] = "Lesson deleted successfully";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Create));
         }
     }
 }

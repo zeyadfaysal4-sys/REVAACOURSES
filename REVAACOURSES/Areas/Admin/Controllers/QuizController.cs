@@ -21,10 +21,10 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             _courseRepository = courseRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int lessonId)
         {
 
-            var quizzes = await _quizRepository.GetAsync(includes: [q => q.Lesson]);
+            var quizzes = await _quizRepository.GetAsync(q=>q.LessonId == lessonId, includes: [q => q.Lesson]);
             return View(quizzes);
         }
 
@@ -41,10 +41,11 @@ namespace REVAACOURSES.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Quiez quiz)
         {
-
             if (ModelState.IsValid)
             {
+                ViewBag.Courses = await _courseRepository.GetAsync();
                 ViewBag.Lessons = await _lessonRepository.GetAsync();
+
                 return View(quiz);
             }
 
@@ -55,8 +56,10 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             TempData["Success-Notification"] = "Quiz created successfully";
 
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new
+            {
+                lessonId = quiz.LessonId
+            });
         }
 
         [HttpGet]
@@ -87,7 +90,10 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             TempData["Success-Notification"] = "Quiz updated successfully";
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new
+            {
+                lessonId = quiz.LessonId
+            });
         }
 
         [HttpPost]
@@ -107,7 +113,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             TempData["Success-Notification"] = "Quiz deleted successfully";
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Create));
         }
 
     }

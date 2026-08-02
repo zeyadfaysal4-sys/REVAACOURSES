@@ -6,32 +6,36 @@
         <div class="row gx-4 gx-lg-5 align-items-center">
 
             <div class="col-md-6">
-                <img class="card-img-top mb-5 mb-md-0"
+                <img class="course-details-img"
                      src="~/Images/CourseImages/@Model.Course.Img"
-                     alt="..." />
+                     alt="@Model.Course.Title" />
             </div>
 
             <div class="col-md-6">
 
-                <div class="small mb-1">@Model.Course.Category.Name</div>
+                <div class="small mb-1">
+                    @Model.Course.Category.Name
+                </div>
 
-                <h1 class="display-5 fw-bolder">@Model.Course.Title</h1>
+                <h1 class="display-5 fw-bolder">
+                    @Model.Course.Title
+                </h1>
 
                 <span class="course-price">
                     $ @Model.Course.Price
                 </span>
 
-                <p class="lead mt-3">@Model.Course.Description</p>
+                <p class="lead mt-3">
+                    @Model.Course.Description
+                </p>
 
                 <form asp-action="AddToCart" asp-controller="Cart">
-                    <div class="d-flex">
-                        <input name="courseId" value="@Model.Course.Id" hidden />
+                    <input name="courseId" value="@Model.Course.Id" hidden />
 
-                        <button class="btn btn-outline-dark flex-shrink-0" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Add to cart
-                        </button>
-                    </div>
+                    <button class="btn btn-outline-dark" type="submit">
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
                 </form>
 
             </div>
@@ -40,47 +44,79 @@
     </div>
 </section>
 
-<h3 class="mt-5 text-white">Student Reviews</h3>
+
+<h3 class="fw-bold mt-3 mb-4">
+    Student Reviews
+</h3>
+
+
 @if (Model.Reviews.Any())
 {
-    @foreach (var review in Model.Reviews)
+    foreach (var review in Model.Reviews)
     {
-        <div class="card mb-3">
-            <div class="card-body">
+        <div class="review-card mb-4">
 
-                <div class="d-flex justify-content-between">
-                    <h5>@review.Student.User.Name</h5>
-                    <span>
+            <div class="d-flex align-items-start gap-3">
+
+                <div class="review-avatar">
+                    @(review.Student.User.Name.Substring(0, 1).ToUpper())
+                </div>
+
+
+                <div class="flex-grow-1">
+
+                    <h6 class="fw-bold">
+                        @review.Student.User.Name
+                    </h6>
+
+
+                    <div class="rating mb-2">
                         @for (int i = 1; i <= 5; i++)
                         {
                             if (i <= review.Rating)
                             {
-                                <span class="text-warning">★</span>
+                                <span class="star filled">★</span>
                             }
                             else
                             {
-                                <span class="text-secondary">☆</span>
+                                <span class="star empty">☆</span>
                             }
                         }
-                    </span>
+
+                        <span class="rating-number">
+                            @review.Rating / 5
+                        </span>
+                    </div>
+
+
+                    <p class="review-text">
+                        @review.Comment
+                    </p>
+
                 </div>
 
-                <p class="mt-2">@review.Comment</p>
-
             </div>
+
         </div>
     }
 }
 else
 {
-    <p class="text-muted">No reviews yet.</p>
+    <div class="alert alert-light">
+        No reviews yet.
+    </div>
 }
-<!-- Related items section -->
+
+
+
 <section class="py-5 bg-light">
 
     <div class="container px-4 px-lg-5 mt-5">
 
-        <h2 class="fw-bolder mb-4">Related Products</h2>
+        <h2 class="fw-bolder mb-4">
+            Related Courses
+        </h2>
+
 
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
@@ -91,19 +127,23 @@ else
                     <div class="card h-100">
 
                         <div class="badge bg-dark text-white position-absolute"
-                             style="top:0.5rem; right:0.5rem;">
+                             style="top:.5rem;right:.5rem">
                             @item.Category.Name
                         </div>
 
+
                         <img class="card-img-top"
                              src="~/Images/CourseImages/@item.Img"
-                             alt="..." />
+                             alt="@item.Title" />
+
 
                         <div class="card-body p-4">
 
                             <div class="text-center">
 
-                                <h5 class="fw-bolder">@item.Title</h5>
+                                <h5 class="fw-bolder">
+                                    @item.Title
+                                </h5>
 
                                 <span class="course-price-card">
                                     $ @item.Price
@@ -113,14 +153,24 @@ else
 
                         </div>
 
+
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 
-                            <div class="text-center">
-                                <a class="btn btn-outline-dark mt-auto"
-                                   href="/Customer/Cart/AddToCart?CourseId=@item.Id">
-                                    Add to cart
-                                </a>
-                            </div>
+                            <form asp-action="AddToCart" asp-controller="Cart">
+
+                                <input name="courseId"
+                                       value="@item.Id"
+                                       hidden />
+
+                                <div class="text-center">
+
+                                    <button class="btn btn-outline-dark">
+                                        Add to cart
+                                    </button>
+
+                                </div>
+
+                            </form>
 
                         </div>
 
@@ -135,69 +185,89 @@ else
 
 </section>
 
+
 <style>
 
-    .small {
-        color: white !important;
+    .course-details-img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.15);
     }
 
-    .display-5 {
-        color: white !important;
-    }
-
-    .lead {
-        color: white !important;
-    }
-
-    h2 {
-        color: white !important;
-    }
 
     .course-price {
-        color: white !important;
-        font-size: 1.5rem;
+        font-size: 32px;
         font-weight: bold;
+        color: #2563eb;
     }
 
-    .course-price-card {
-        color: #212529 !important;
-        font-size: 1.2rem;
-        font-weight: bold;
+
+    .review-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        border: 1px solid #e5e7eb;
     }
 
-    .btn-outline-dark {
+
+    .review-avatar {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background: #111827;
         color: white;
-        border-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: bold;
     }
 
-        .btn-outline-dark:hover {
-            background: white;
-            color: black;
+
+    .star {
+        color: #ccc;
+        font-size: 20px;
+    }
+
+
+        .star.filled {
+            color: #f59e0b;
         }
 
-    .bg-light {
-        background: transparent !important;
+
+    .rating-number {
+        color: #666;
+        font-size: 14px;
+        margin-left: 8px;
     }
+
+
+    .review-text {
+        color: #333;
+        line-height: 1.7;
+    }
+
 
     .card {
-        background: rgba(255,255,255,.95);
-        border: none;
         border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0,0,0,.15);
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,.08);
     }
 
-        .card h5 {
-            color: #212529 !important;
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
         }
 
-        .card .btn-outline-dark {
-            color: #212529;
-            border-color: #212529;
-        }
 
-            .card .btn-outline-dark:hover {
-                background: #212529;
-                color: white;
-            }
+    .course-price-card {
+        color: #2563eb;
+        font-weight: bold;
+        font-size: 18px;
+    }
 
 </style>

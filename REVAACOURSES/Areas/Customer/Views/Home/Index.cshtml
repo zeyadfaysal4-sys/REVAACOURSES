@@ -5,17 +5,23 @@
     ViewData["Title"] = "";
 }
 
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Welcome to in REVAA_COURSES</h1>
-            <p class="lead fw-normal text-white-50 mb-0">
-                With this shop hompeage template
-            </p>
-        </div>
+<!-- Navbar -->
+
+
+<!-- Hero -->
+<header class="hero-section">
+    <div class="container text-center text-white py-5">
+        <h1 class="display-4 fw-bold">
+            Learn Without Limits
+        </h1>
+
+        <p class="lead">
+            Discover thousands of courses and improve your skills.
+        </p>
     </div>
 </header>
 
+<!-- Filter -->
 <section class="py-4 filter-bar">
     <div class="container">
 
@@ -72,60 +78,76 @@
                         Filter
                     </button>
                 </div>
-
             </div>
         </form>
 
     </div>
 </section>
 
-<section class="py-3">
-    <div class="container px-4 px-lg-5 mt-5">
+<!-- Courses -->
+<section class="py-5">
 
-        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            Popular Courses
+        </h2>
+
+        <div class="row g-4">
 
             @foreach (var item in Model)
             {
-                <div class="col mb-4">
+                <div class="col-lg-3 col-md-6">
 
-                    <div class="card h-100 shadow-sm">
+                    <div class="course-card shadow-sm">
 
-                        <!-- Category -->
-                        <div class="badge bg-dark text-white position-absolute"
-                             style="top:10px;right:10px">
-                            @item.Category.Name
+                        <div class="position-relative">
+
+                            <img src="~/Images/CourseImages/@item.Img"
+                                 class="course-img"
+                                 alt="@item.Title" />
+
+                            @if (item.Category != null)
+                            {
+                                <span class="category-badge">
+                                    @item.Category.Name
+                                </span>
+                            }
+
                         </div>
 
-                        <!-- Image -->
-                        <img src="~/Images/CourseImages/@item.Img"
-                             class="card-img-top course-img"
-                             alt="@item.Title" />
+                        <div class="p-3">
 
-                        <!-- Details -->
-                        <div class="card-body d-flex flex-column text-center">
-
-                            <h5 class="fw-bolder">
+                            <h5 class="fw-bold">
                                 @item.Title
                             </h5>
 
-                            <p class="card-text description">
-                                @item.Description
+                            <p class="text-muted small description">
+                                @(string.IsNullOrWhiteSpace(item.Description)
+                                    ? "No description available"
+                                    : item.Description)
                             </p>
 
-                            <h5 class="fw-bolder">
-                                @item.CreatedAt.ToString("MM/dd/yyyy")
-                            </h5>
+                            <div class="rating">
+                                ⭐⭐⭐⭐⭐
+                                <span>4.8</span>
+                            </div>
 
-                            <h5 class="mb-3">
+                            <h5 class="fw-bold text-primary mt-2">
                                 $ @item.Price
                             </h5>
 
-                            <div class="mt-auto">
-                                <a class="btn btn-outline-dark"
-                                   href="/Customer/Home/CourseDetails/@item.Id">
-                                    View
-                                </a>
-                            </div>
+                            <p class="small text-muted">
+                                Added: @item.CreatedAt.ToString("MM/dd/yyyy")
+                            </p>
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="CourseDetails"
+                               asp-route-id="@item.Id"
+                               class="btn btn-primary w-100">
+                                View Course
+                            </a>
 
                         </div>
 
@@ -138,21 +160,30 @@
 
     </div>
 
-    <!-- Pagination -->
+</section>
+
+<!-- Pagination -->
+<section>
     <nav aria-label="Page navigation example">
         <div class="d-flex justify-content-center align-items-center">
             <ul class="pagination">
 
+                <!-- Previous -->
                 <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
                     <a class="page-link"
                        asp-area="Customer"
                        asp-controller="Home"
                        asp-action="Index"
-                       asp-route-page="@(ViewBag.CurrentPage - 1)">
+                       asp-route-page="@(ViewBag.CurrentPage - 1)"
+                       asp-route-Title="@ViewBag.Title"
+                       asp-route-Price="@ViewBag.Price"
+                       asp-route-CreatedAt="@ViewBag.CreatedAt"
+                       asp-route-CategoryId="@ViewBag.CategoryId">
                         Previous
                     </a>
                 </li>
 
+                <!-- Page Numbers -->
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
@@ -160,18 +191,27 @@
                            asp-area="Customer"
                            asp-controller="Home"
                            asp-action="Index"
-                           asp-route-page="@i">
+                           asp-route-page="@i"
+                           asp-route-Title="@ViewBag.Title"
+                           asp-route-Price="@ViewBag.Price"
+                           asp-route-CreatedAt="@ViewBag.CreatedAt"
+                           asp-route-CategoryId="@ViewBag.CategoryId">
                             @i
                         </a>
                     </li>
                 }
 
+                <!-- Next -->
                 <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
                     <a class="page-link"
                        asp-area="Customer"
                        asp-controller="Home"
                        asp-action="Index"
-                       asp-route-page="@(ViewBag.CurrentPage + 1)">
+                       asp-route-page="@(ViewBag.CurrentPage + 1)"
+                       asp-route-Title="@ViewBag.Title"
+                       asp-route-Price="@ViewBag.Price"
+                       asp-route-CreatedAt="@ViewBag.CreatedAt"
+                       asp-route-CategoryId="@ViewBag.CategoryId">
                         Next
                     </a>
                 </li>
@@ -179,34 +219,58 @@
             </ul>
         </div>
     </nav>
-
 </section>
-
 <style>
-    .card{
-        height:100%;
-        border-radius:15px;
+
+    .hero-section {
+        background: linear-gradient(135deg,#111827,#2563eb);
     }
 
-    .course-img{
-        height:300px;
-        object-fit:cover;
+    .filter-bar {
+        background: #f8fafc;
     }
 
-    .card-body{
-        display:flex;
-        flex-direction:column;
+    .course-card {
+        background: white;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        transition: .3s;
+        height: 100%;
     }
 
-    .description{
-        height:48px;
-        overflow:hidden;
-        display:-webkit-box;
-        -webkit-line-clamp:2;
-        -webkit-box-orient:vertical;
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px #ddd;
+        }
+
+    .course-img {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
     }
 
-    .mt-auto{
-        margin-top:auto;
+    .category-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #2563eb;
+        color: white;
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 12px;
     }
+
+    .description {
+        height: 45px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .rating {
+        color: #f59e0b;
+    }
+
 </style>

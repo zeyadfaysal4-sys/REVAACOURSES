@@ -23,37 +23,38 @@ html {
     min-height: 100%;
 }
 
+
 body {
     margin-bottom: 60px;
-    background: linear-gradient(135deg, #41414b, #66558f);
+    background: linear-gradient(135deg, #ffffff, #eef1f5);
     min-height: 100vh;
+    color: #000;
 }
 
 
-    /* تأثير بنفسجي أعلى الصفحة */
+    /* تأثير رمادي أعلى الصفحة */
     body::before {
         content: "";
         position: fixed;
         width: 350px;
         height: 350px;
-        background: #8b5cf6;
+        background: #cbd5e1;
         border-radius: 50%;
         filter: blur(140px);
         top: -100px;
         left: -100px;
-        opacity: .25;
+        opacity: .35;
         z-index: -1;
     }
 
 
-
-    /* تأثير وردي أسفل الصفحة */
+    /* تأثير رمادي أسفل الصفحة */
     body::after {
         content: "";
         position: fixed;
         width: 300px;
         height: 300px;
-        background: #ec4899;
+        background: #94a3b8;
         border-radius: 50%;
         filter: blur(120px);
         bottom: -100px;
@@ -61,3 +62,72 @@ body {
         opacity: .20;
         z-index: -1;
     }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span:not(.star),
+label {
+    color: #000 !important;
+}
+
+
+/* Navbar Brand */
+.navbar-brand {
+    color: #2563eb !important;
+    font-weight: bold;
+}
+
+
+    .navbar-brand:hover {
+        color: #1d4ed8 !important;
+    }
+
+
+/* Navbar links */
+.nav-link {
+    color: #000 !important;
+}
+
+
+    .nav-link:hover {
+        color: #2563eb !important;
+    }
+
+
+/* ===========================
+   Course Reviews Stars
+   =========================== */
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+
+.star {
+    font-size: 24px;
+    color: #d1d5db;
+}
+
+
+    .star.filled {
+        color: #fbbf24 !important;
+    }
+
+
+    .star.empty {
+        color: #d1d5db !important;
+    }
+
+
+.rating-number {
+    color: #666 !important;
+    font-size: 14px;
+    margin-left: 8px;
+}

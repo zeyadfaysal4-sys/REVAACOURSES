@@ -55,6 +55,12 @@
                     <td>@item.Course?.Title</td>
 
                     <td>
+                        <a asp-controller="Quiz"
+                           asp-action="Index"
+                           asp-route-lessonId="@item.Id"
+                           class="btn btn-info btn-sm">
+                            Quiz
+                        </a>
 
                         <a asp-action="Update"
                            asp-route-id="@item.Id"
@@ -80,7 +86,6 @@
                         </form>
 
                     </td>
-
                 </tr>
 
                 count++;

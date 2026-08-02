@@ -26,6 +26,12 @@ namespace REVAACOURSES.Areas.Customer.Controllers
         }
         public async Task<IActionResult> Index(FilterCourseVM filter)
         {
+
+            if (filter.Page == 0)
+            {
+                filter.Page = 1;
+            }
+
             var course = await _CourseRepository.GetAsync(includes: [c => c.Category]);
 
             if (filter.Title != null)
@@ -53,10 +59,11 @@ namespace REVAACOURSES.Areas.Customer.Controllers
             }
 
             ViewBag.Categories = await _CategoryRepository.GetAsync();
-            ViewBag.TotalPages = (int)Math.Ceiling(course.Count() / 6.0);
+            ViewBag.TotalPages = (int)Math.Ceiling(course.Count() / 8.0);
             ViewBag.CurrentPage = filter.Page;
 
-            course = course.Skip((filter.Page - 1) * 6).Take(6).ToList();
+            course = course.Skip((filter.Page - 1) * 8).Take(8).ToList();
+
 
             return View(course.AsEnumerable());
         }

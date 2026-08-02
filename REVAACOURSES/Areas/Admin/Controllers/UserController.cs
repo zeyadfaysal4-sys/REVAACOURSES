@@ -63,7 +63,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEmployee(CreateEmployeeVM employeeVM)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 TempData["Error-Notification"] = "Invalid Data";
                 return View(employeeVM);
@@ -112,7 +112,6 @@ namespace REVAACOURSES.Areas.Admin.Controllers
                 await _instructorRepository.AddAsync(new Instructor
                 {
                     UserId = employee.Id,
-                    Bio = employeeVM.Bio
                 });
 
                 await _instructorRepository.CommitAsync();
