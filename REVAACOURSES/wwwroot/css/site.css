@@ -1,5 +1,12 @@
+/* =========================================================
+GLOBAL
+========================================================= */
+
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
+    background: #ffffff;
 }
 
 @media (min-width: 768px) {
@@ -8,6 +15,40 @@ html {
     }
 }
 
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 0;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    background: linear-gradient(135deg, #ffffff, #eef1f5);
+    color: #111827;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+
+/* =========================================================
+DARK MODE - GLOBAL
+========================================================= */
+
+html.dark-mode {
+    background: #0f172a !important;
+}
+
+    html.dark-mode body,
+    body.dark-mode {
+        background: linear-gradient(135deg, #0f172a, #111827) !important;
+        color: #f8fafc !important;
+    }
+
+
+/* =========================================================
+FOCUS
+========================================================= */
 
 .btn:focus,
 .btn:active:focus,
@@ -18,90 +59,419 @@ html {
 }
 
 
-html {
-    position: relative;
-    min-height: 100%;
+/* =========================================================
+BACKGROUND GLOW
+========================================================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    background: #cbd5e1;
+    border-radius: 50%;
+    filter: blur(140px);
+    top: -100px;
+    left: -100px;
+    opacity: 0.35;
+    z-index: -1;
+    pointer-events: none;
 }
 
+body::after {
+    content: "";
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: #94a3b8;
+    border-radius: 50%;
+    filter: blur(120px);
+    bottom: -100px;
+    right: -100px;
+    opacity: 0.20;
+    z-index: -1;
+    pointer-events: none;
+}
+
+html.dark-mode body::before,
+body.dark-mode::before {
+    background: #1e3a8a;
+    opacity: 0.20;
+}
+
+html.dark-mode body::after,
+body.dark-mode::after {
+    background: #312e81;
+    opacity: 0.20;
+}
+
+
+/* =========================================================
+GLOBAL TEXT - LIGHT MODE
+الكلام خارج الـ Cards أسود
+========================================================= */
 
 body {
-    margin-bottom: 60px;
-    background: linear-gradient(135deg, #ffffff, #eef1f5);
-    min-height: 100vh;
-    color: #000;
+    color: #111827;
 }
 
-
-    /* تأثير رمادي أعلى الصفحة */
-    body::before {
-        content: "";
-        position: fixed;
-        width: 350px;
-        height: 350px;
-        background: #cbd5e1;
-        border-radius: 50%;
-        filter: blur(140px);
-        top: -100px;
-        left: -100px;
-        opacity: .35;
-        z-index: -1;
+    body h1,
+    body h2,
+    body h3,
+    body h4,
+    body h5,
+    body h6,
+    body p,
+    body label {
+        color: #111827;
     }
 
 
-    /* تأثير رمادي أسفل الصفحة */
-    body::after {
-        content: "";
-        position: fixed;
-        width: 300px;
-        height: 300px;
-        background: #94a3b8;
-        border-radius: 50%;
-        filter: blur(120px);
-        bottom: -100px;
-        right: -100px;
-        opacity: .20;
-        z-index: -1;
-    }
+/* =========================================================
+COURSE DETAILS TEXT - LIGHT MODE
+مهم: الكلام خارج الـ Card يكون أسود
+========================================================= */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span:not(.star),
-label {
-    color: #000 !important;
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main h6,
+main p,
+main label,
+main .lead,
+main .small {
+    color: #111827 !important;
 }
 
 
-/* Navbar Brand */
+/* Category */
+
+main .small {
+    color: #111827 !important;
+}
+
+
+/* Course Price */
+
+main .course-price {
+    color: #2563eb !important;
+}
+
+
+/* =========================================================
+NAVBAR
+========================================================= */
+
+.navbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease;
+}
+
 .navbar-brand {
     color: #2563eb !important;
-    font-weight: bold;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.3px;
+    transition: 0.25s ease;
 }
-
 
     .navbar-brand:hover {
         color: #1d4ed8 !important;
+        transform: translateY(-1px);
+    }
+
+.navbar .nav-link {
+    color: #111827 !important;
+    font-weight: 600;
+    padding: 8px 12px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+    .navbar .nav-link:hover {
+        color: #2563eb !important;
+        background: transparent !important;
+        transform: translateY(-1px);
     }
 
 
-/* Navbar links */
-.nav-link {
-    color: #000 !important;
+/* =========================================================
+NAVBAR TOGGLER
+========================================================= */
+
+.navbar-toggler {
+    border-color: #d1d5db !important;
+}
+
+    .navbar-toggler:focus {
+        box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.20);
+    }
+
+
+/* =========================================================
+BUTTONS
+========================================================= */
+
+.btn {
+    border-radius: 10px !important;
+    font-weight: 700;
+    transition: all 0.25s ease;
+}
+
+    .btn i {
+        transition: transform 0.25s ease;
+    }
+
+    .btn:hover i {
+        transform: scale(1.08);
+    }
+
+
+/* =========================================================
+PRIMARY BUTTON
+========================================================= */
+
+.btn-primary {
+    background: #2563eb !important;
+    border: 1px solid #2563eb !important;
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    font-weight: 700;
+    padding: 10px 18px;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+    transition: all 0.25s ease;
+}
+
+    .btn-primary:hover {
+        background: #1d4ed8 !important;
+        border-color: #1d4ed8 !important;
+        color: #ffffff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(37, 99, 235, 0.30);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+
+
+/* =========================================================
+NAVBAR CART
+========================================================= */
+
+.navbar .btn-outline-dark {
+    background: transparent !important;
+    border: none !important;
+    color: #111827 !important;
+    border-radius: 0 !important;
+    font-weight: 600 !important;
+    padding: 8px 12px !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+    .navbar .btn-outline-dark:hover {
+        background: transparent !important;
+        border: none !important;
+        color: #2563eb !important;
+        box-shadow: none !important;
+        transform: translateY(-1px) !important;
+    }
+
+    .navbar .btn-outline-dark i {
+        color: inherit !important;
+    }
+
+    .navbar .btn-outline-dark .badge {
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
+
+/* =========================================================
+THEME TOGGLE
+========================================================= */
+
+.navbar .theme-toggle {
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    padding: 8px 12px !important;
+    margin-left: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: inherit !important;
+    cursor: pointer;
+    transform: none !important;
+    transition: color 0.25s ease, transform 0.25s ease !important;
+}
+
+    .navbar .theme-toggle i {
+        color: inherit !important;
+    }
+
+    .navbar .theme-toggle:hover {
+        background: transparent !important;
+        border: none !important;
+        color: #2563eb !important;
+        box-shadow: none !important;
+        transform: translateY(-1px) !important;
+    }
+
+
+/* =========================================================
+CARDS
+لم يتم تغيير الـ Light Mode
+========================================================= */
+
+.card {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.13);
+    }
+
+    .card h1,
+    .card h2,
+    .card h3,
+    .card h4,
+    .card h5,
+    .card h6 {
+        color: #111827 !important;
+    }
+
+    .card p {
+        color: #4b5563 !important;
+    }
+
+    .card span {
+        color: #111827 !important;
+    }
+
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+
+/* =========================================================
+CATEGORY
+========================================================= */
+
+.category-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    z-index: 5;
 }
 
 
-    .nav-link:hover {
-        color: #2563eb !important;
+/* =========================================================
+COURSE PRICE
+========================================================= */
+
+.course-price,
+.course-price-card {
+    color: #2563eb !important;
+    font-weight: 800;
+}
+
+.course-price {
+    font-size: 32px;
+}
+
+.course-price-card {
+    font-size: 18px;
+}
+
+
+/* =========================================================
+COURSE DETAILS IMAGE
+========================================================= */
+
+.course-details-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+REVIEW CARD
+========================================================= */
+
+.review-card {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: background 0.4s ease, border 0.4s ease;
+}
+
+    .review-card h1,
+    .review-card h2,
+    .review-card h3,
+    .review-card h4,
+    .review-card h5,
+    .review-card h6 {
+        color: #111827 !important;
     }
 
+.review-avatar {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #111827;
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+}
 
-/* ===========================
-   Course Reviews Stars
-   =========================== */
+.review-text {
+    color: #374151 !important;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+RATING
+========================================================= */
 
 .rating {
     display: flex;
@@ -109,25 +479,622 @@ label {
     gap: 3px;
 }
 
-
 .star {
     font-size: 24px;
-    color: #d1d5db;
+    color: #d1d5db !important;
 }
-
 
     .star.filled {
         color: #fbbf24 !important;
     }
 
-
     .star.empty {
         color: #d1d5db !important;
     }
 
-
 .rating-number {
-    color: #666 !important;
+    color: #666666 !important;
     font-size: 14px;
     margin-left: 8px;
+}
+
+
+/* =========================================================
+BACKGROUNDS
+========================================================= */
+
+.bg-light {
+    background: #f8fafc !important;
+}
+
+
+/* =========================================================
+FOOTER
+تم تعديل الفوتر فقط
+========================================================= */
+
+.footer {
+    background: transparent;
+    color: #6b7280 !important;
+    /* نزّل الفوتر شوية */
+    margin-top: 60px !important;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+
+/* =========================================================
+FORM
+========================================================= */
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+
+/* =========================================================
+DARK MODE - NAVBAR
+========================================================= */
+
+html.dark-mode .navbar,
+body.dark-mode .navbar {
+    background: #0f172a !important;
+    border-bottom: 1px solid #334155 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.30);
+}
+
+html.dark-mode .navbar-brand,
+body.dark-mode .navbar-brand {
+    color: #60a5fa !important;
+}
+
+    html.dark-mode .navbar-brand:hover,
+    body.dark-mode .navbar-brand:hover {
+        color: #93c5fd !important;
+    }
+
+html.dark-mode .navbar .nav-link,
+body.dark-mode .navbar .nav-link {
+    color: #ffffff !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+    html.dark-mode .navbar .nav-link:hover,
+    body.dark-mode .navbar .nav-link:hover {
+        color: #60a5fa !important;
+        background: transparent !important;
+        transform: translateY(-1px);
+    }
+
+html.dark-mode .navbar-toggler,
+body.dark-mode .navbar-toggler {
+    border-color: #475569 !important;
+}
+
+html.dark-mode .navbar-toggler-icon,
+body.dark-mode .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+
+/* =========================================================
+DARK MODE - PRIMARY BUTTON
+========================================================= */
+
+html.dark-mode .btn-primary,
+body.dark-mode .btn-primary {
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+    html.dark-mode .btn-primary:hover,
+    body.dark-mode .btn-primary:hover {
+        background: #60a5fa !important;
+        border-color: #60a5fa !important;
+        color: #0f172a !important;
+    }
+
+
+/* =========================================================
+DARK MODE - CART
+========================================================= */
+
+html.dark-mode .navbar .btn-outline-dark,
+body.dark-mode .navbar .btn-outline-dark {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+    html.dark-mode .navbar .btn-outline-dark:hover,
+    body.dark-mode .navbar .btn-outline-dark:hover {
+        background: transparent !important;
+        border: none !important;
+        color: #60a5fa !important;
+        box-shadow: none !important;
+        transform: translateY(-1px) !important;
+    }
+
+    html.dark-mode .navbar .btn-outline-dark i,
+    body.dark-mode .navbar .btn-outline-dark i {
+        color: inherit !important;
+    }
+
+    html.dark-mode .navbar .btn-outline-dark .badge,
+    body.dark-mode .navbar .btn-outline-dark .badge {
+        background: #3b82f6 !important;
+        color: #ffffff !important;
+    }
+
+
+/* =========================================================
+DARK MODE - THEME TOGGLE
+========================================================= */
+
+html.dark-mode .navbar .theme-toggle,
+body.dark-mode .navbar .theme-toggle {
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    padding: 8px 12px !important;
+    margin-left: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+    html.dark-mode .navbar .theme-toggle i,
+    body.dark-mode .navbar .theme-toggle i {
+        color: inherit !important;
+    }
+
+    html.dark-mode .navbar .theme-toggle:hover,
+    body.dark-mode .navbar .theme-toggle:hover {
+        background: transparent !important;
+        border: none !important;
+        color: #60a5fa !important;
+        box-shadow: none !important;
+        transform: translateY(-1px) !important;
+    }
+
+
+/* =========================================================
+DARK MODE - CARDS
+نفس شكل الـ Cards
+========================================================= */
+
+html.dark-mode .card,
+body.dark-mode .card {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+    html.dark-mode .card:hover,
+    body.dark-mode .card:hover {
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    html.dark-mode .card h1,
+    html.dark-mode .card h2,
+    html.dark-mode .card h3,
+    html.dark-mode .card h4,
+    html.dark-mode .card h5,
+    html.dark-mode .card h6,
+    html.dark-mode .card p,
+    html.dark-mode .card span,
+    html.dark-mode .card label,
+    body.dark-mode .card h1,
+    body.dark-mode .card h2,
+    body.dark-mode .card h3,
+    body.dark-mode .card h4,
+    body.dark-mode .card h5,
+    body.dark-mode .card h6,
+    body.dark-mode .card p,
+    body.dark-mode .card span,
+    body.dark-mode .card label {
+        color: #ffffff !important;
+    }
+
+    html.dark-mode .card p,
+    body.dark-mode .card p {
+        color: #e2e8f0 !important;
+    }
+
+    html.dark-mode .card .text-muted,
+    body.dark-mode .card .text-muted {
+        color: #cbd5e1 !important;
+    }
+
+html.dark-mode .card-body,
+body.dark-mode .card-body {
+    background: #1e293b !important;
+    color: #ffffff !important;
+}
+
+html.dark-mode .card-footer,
+body.dark-mode .card-footer {
+    background: #1e293b !important;
+    border-top-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+DARK MODE - COURSE DETAILS
+========================================================= */
+
+/* كل الكلام خارج الـ Cards أبيض */
+
+html.dark-mode main,
+body.dark-mode main {
+    color: #f8fafc !important;
+}
+
+
+    /* العناوين */
+
+    html.dark-mode main h1,
+    html.dark-mode main h2,
+    html.dark-mode main h3,
+    html.dark-mode main h4,
+    html.dark-mode main h5,
+    html.dark-mode main h6,
+    body.dark-mode main h1,
+    body.dark-mode main h2,
+    body.dark-mode main h3,
+    body.dark-mode main h4,
+    body.dark-mode main h5,
+    body.dark-mode main h6 {
+        color: #ffffff !important;
+    }
+
+
+    /* الوصف */
+
+    html.dark-mode main p,
+    body.dark-mode main p {
+        color: #ffffff !important;
+    }
+
+
+    /* Lead Description */
+
+    html.dark-mode main .lead,
+    body.dark-mode main .lead {
+        color: #ffffff !important;
+    }
+
+
+    /* Category */
+
+    html.dark-mode main .small,
+    body.dark-mode main .small {
+        color: #ffffff !important;
+    }
+
+
+    /* السعر يظل أزرق */
+
+    html.dark-mode main .course-price,
+    body.dark-mode main .course-price {
+        color: #60a5fa !important;
+    }
+
+
+/* =========================================================
+DARK MODE - CATEGORY
+========================================================= */
+
+html.dark-mode .category-badge,
+body.dark-mode .category-badge {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+DARK MODE - REVIEW
+========================================================= */
+
+html.dark-mode .review-card,
+body.dark-mode .review-card {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+    html.dark-mode .review-card h1,
+    html.dark-mode .review-card h2,
+    html.dark-mode .review-card h3,
+    html.dark-mode .review-card h4,
+    html.dark-mode .review-card h5,
+    html.dark-mode .review-card h6,
+    html.dark-mode .review-card p,
+    html.dark-mode .review-card span,
+    body.dark-mode .review-card h1,
+    body.dark-mode .review-card h2,
+    body.dark-mode .review-card h3,
+    body.dark-mode .review-card h4,
+    body.dark-mode .review-card h5,
+    body.dark-mode .review-card h6,
+    body.dark-mode .review-card p,
+    body.dark-mode .review-card span {
+        color: #ffffff !important;
+    }
+
+html.dark-mode .review-text,
+body.dark-mode .review-text {
+    color: #e2e8f0 !important;
+}
+
+html.dark-mode .review-avatar,
+body.dark-mode .review-avatar {
+    background: #334155;
+    color: #ffffff !important;
+}
+
+html.dark-mode .star.filled,
+body.dark-mode .star.filled {
+    color: #fbbf24 !important;
+}
+
+html.dark-mode .star.empty,
+body.dark-mode .star.empty {
+    color: #64748b !important;
+}
+
+html.dark-mode .rating-number,
+body.dark-mode .rating-number {
+    color: #cbd5e1 !important;
+}
+
+
+/* =========================================================
+DARK MODE - BACKGROUNDS
+========================================================= */
+
+html.dark-mode .bg-light,
+body.dark-mode .bg-light {
+    background: #0b1120 !important;
+    color: #ffffff !important;
+}
+
+html.dark-mode .alert-light,
+body.dark-mode .alert-light {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+DARK MODE - FOOTER
+========================================================= */
+
+html.dark-mode .footer,
+body.dark-mode .footer {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #ffffff !important;
+    /* نفس نزول الفوتر في Light Mode */
+    margin-top: 60px !important;
+}
+
+    html.dark-mode .footer *,
+    body.dark-mode .footer * {
+        color: #ffffff !important;
+    }
+
+
+/* =========================================================
+DARK MODE - FORMS
+========================================================= */
+
+html.dark-mode .form-control,
+html.dark-mode .form-select,
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+    color: #ffffff !important;
+}
+
+    html.dark-mode .form-control::placeholder,
+    body.dark-mode .form-control::placeholder {
+        color: #94a3b8 !important;
+    }
+
+    html.dark-mode .form-select option,
+    body.dark-mode .form-select option {
+        background: #1e293b;
+        color: #ffffff;
+    }
+
+
+/* =========================================================
+COURSE BOXES - DARK MODE ONLY
+========================================================= */
+
+html.dark-mode .course-card,
+html.dark-mode .course-item,
+html.dark-mode .my-course-card,
+html.dark-mode .my-course-item,
+html.dark-mode .course-box,
+body.dark-mode .course-card,
+body.dark-mode .course-item,
+body.dark-mode .my-course-card,
+body.dark-mode .my-course-item,
+body.dark-mode .course-box {
+    background: #1e293b !important;
+    color: #ffffff !important;
+    border-color: #334155 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28) !important;
+}
+
+
+    /* Course Boxes Text */
+
+    html.dark-mode .course-card h1,
+    html.dark-mode .course-card h2,
+    html.dark-mode .course-card h3,
+    html.dark-mode .course-card h4,
+    html.dark-mode .course-card h5,
+    html.dark-mode .course-card h6,
+    html.dark-mode .course-card p,
+    html.dark-mode .course-card span,
+    html.dark-mode .course-item h1,
+    html.dark-mode .course-item h2,
+    html.dark-mode .course-item h3,
+    html.dark-mode .course-item h4,
+    html.dark-mode .course-item h5,
+    html.dark-mode .course-item h6,
+    html.dark-mode .course-item p,
+    html.dark-mode .course-item span,
+    html.dark-mode .my-course-card h1,
+    html.dark-mode .my-course-card h2,
+    html.dark-mode .my-course-card h3,
+    html.dark-mode .my-course-card h4,
+    html.dark-mode .my-course-card h5,
+    html.dark-mode .my-course-card h6,
+    html.dark-mode .my-course-card p,
+    html.dark-mode .my-course-card span,
+    html.dark-mode .my-course-item h1,
+    html.dark-mode .my-course-item h2,
+    html.dark-mode .my-course-item h3,
+    html.dark-mode .my-course-item h4,
+    html.dark-mode .my-course-item h5,
+    html.dark-mode .my-course-item h6,
+    html.dark-mode .my-course-item p,
+    html.dark-mode .my-course-item span,
+    html.dark-mode .course-box h1,
+    html.dark-mode .course-box h2,
+    html.dark-mode .course-box h3,
+    html.dark-mode .course-box h4,
+    html.dark-mode .course-box h5,
+    html.dark-mode .course-box h6,
+    html.dark-mode .course-box p,
+    html.dark-mode .course-box span,
+    body.dark-mode .course-card h1,
+    body.dark-mode .course-card h2,
+    body.dark-mode .course-card h3,
+    body.dark-mode .course-card h4,
+    body.dark-mode .course-card h5,
+    body.dark-mode .course-card h6,
+    body.dark-mode .course-card p,
+    body.dark-mode .course-card span,
+    body.dark-mode .course-item h1,
+    body.dark-mode .course-item h2,
+    body.dark-mode .course-item h3,
+    body.dark-mode .course-item h4,
+    body.dark-mode .course-item h5,
+    body.dark-mode .course-item h6,
+    body.dark-mode .course-item p,
+    body.dark-mode .course-item span,
+    body.dark-mode .my-course-card h1,
+    body.dark-mode .my-course-card h2,
+    body.dark-mode .my-course-card h3,
+    body.dark-mode .my-course-card h4,
+    body.dark-mode .my-course-card h5,
+    body.dark-mode .my-course-card h6,
+    body.dark-mode .my-course-card p,
+    body.dark-mode .my-course-card span,
+    body.dark-mode .my-course-item h1,
+    body.dark-mode .my-course-item h2,
+    body.dark-mode .my-course-item h3,
+    body.dark-mode .my-course-item h4,
+    body.dark-mode .my-course-item h5,
+    body.dark-mode .my-course-item h6,
+    body.dark-mode .my-course-item p,
+    body.dark-mode .my-course-item span,
+    body.dark-mode .course-box h1,
+    body.dark-mode .course-box h2,
+    body.dark-mode .course-box h3,
+    body.dark-mode .course-box h4,
+    body.dark-mode .course-box h5,
+    body.dark-mode .course-box h6,
+    body.dark-mode .course-box p,
+    body.dark-mode .course-box span {
+        color: #ffffff !important;
+    }
+
+
+    /* =========================================================
+COURSE BUTTONS - DARK MODE
+========================================================= */
+
+    html.dark-mode .course-card .btn,
+    html.dark-mode .course-item .btn,
+    html.dark-mode .my-course-card .btn,
+    html.dark-mode .my-course-item .btn,
+    html.dark-mode .course-box .btn,
+    body.dark-mode .course-card .btn,
+    body.dark-mode .course-item .btn,
+    body.dark-mode .my-course-card .btn,
+    body.dark-mode .my-course-item .btn,
+    body.dark-mode .course-box .btn {
+        background: #3b82f6 !important;
+        border-color: #3b82f6 !important;
+        color: #ffffff !important;
+    }
+
+        html.dark-mode .course-card .btn:hover,
+        html.dark-mode .course-item .btn:hover,
+        html.dark-mode .my-course-card .btn:hover,
+        html.dark-mode .my-course-item .btn:hover,
+        html.dark-mode .course-box .btn:hover,
+        body.dark-mode .course-card .btn:hover,
+        body.dark-mode .course-item .btn:hover,
+        body.dark-mode .my-course-card .btn:hover,
+        body.dark-mode .my-course-item .btn:hover,
+        body.dark-mode .course-box .btn:hover {
+            background: #60a5fa !important;
+            border-color: #60a5fa !important;
+            color: #0f172a !important;
+        }
+
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .navbar-brand {
+        font-size: 18px;
+    }
+
+    .navbar .nav-link,
+    .navbar .btn-outline-dark,
+    .navbar .theme-toggle {
+        padding: 8px 10px !important;
+    }
+
+    .theme-toggle {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .btn-primary {
+        margin-bottom: 8px;
+    }
+
+    .course-details-img {
+        height: 300px;
+    }
+
+    .card img {
+        height: 180px;
+    }
 }

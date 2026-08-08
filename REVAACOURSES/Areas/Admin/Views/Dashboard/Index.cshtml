@@ -1,143 +1,464 @@
-﻿@using REVAACOURSES.ViewModels
-@model DashboardVM
+﻿@model REVAACOURSES.ViewModels.DashboardVM
 
-<div class="container-fluid mt-4">
+@{
+    ViewData["Title"] = "Dashboard";
+}
 
-    <h2 class="mb-4 fw-bold">Dashboard</h2>
+<div class="container-fluid py-4">
 
-    <!-- Cards -->
-    <div class="row g-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <div class="col-lg-3 col-md-6">
-            <div class="card shadow border-0 bg-primary text-white">
-                <div class="card-body">
-                    <h5>Courses</h5>
-                    <h2>@Model.Course</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card shadow border-0 bg-info text-white">
-                <div class="card-body">
-                    <h5>Categories</h5>
-                    <h2>@Model.Categories</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card shadow border-0 bg-success text-white">
-                <div class="card-body">
-                    <h5>Users</h5>
-                    <h2>@Model.User</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card shadow border-0 bg-warning text-white">
-                <div class="card-body">
-                    <h5>Payments</h5>
-                    <h2>@Model.Payment</h2>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-            <div class="card shadow border-0 bg-danger text-white">
-                <div class="card-body">
-                    <h5>Total Revenue</h5>
-                    <h2>$@Model.TotalPrice</h2>
-                </div>
-            </div>
+        <div>
+            <h2 class="fw-bold">Dashboard</h2>
+            <p class="text-muted mb-0">
+                Welcome Back SuperAdmin 👋
+            </p>
         </div>
 
     </div>
 
-    <!-- Chart 1 -->
-    <div class="card mt-5 shadow">
-        <div class="card-header">
-            <h5>System Statistics</h5>
+
+    <!-- Statistics -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small class="text-muted">
+                                Total Revenue
+                            </small>
+
+                            <h2 class="fw-bold text-success">
+                                $@Model.TotalPrice
+                            </h2>
+
+                        </div>
+
+                        <i class="fa-solid fa-dollar-sign fa-2x text-success"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="card-body">
-            <canvas id="statsChart" height="100"></canvas>
+
+        <div class="col-lg-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small class="text-muted">
+                                Courses
+                            </small>
+
+                            <h2 class="fw-bold">
+                                @Model.Course
+                            </h2>
+
+                        </div>
+
+                        <i class="fa-solid fa-book fa-2x text-primary"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+
+
+        <div class="col-lg-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small class="text-muted">
+                                Students
+                            </small>
+
+                            <h2 class="fw-bold">
+                                @Model.User
+                            </h2>
+
+                        </div>
+
+                        <i class="fa-solid fa-users fa-2x text-warning"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small class="text-muted">
+                                Payments
+                            </small>
+
+                            <h2 class="fw-bold">
+                                @Model.Payment
+                            </h2>
+
+                        </div>
+
+                        <i class="fa-solid fa-credit-card fa-2x text-danger"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <!-- Chart 2 -->
-    <div class="card mt-4 shadow">
-        <div class="card-header">
-            <h5>Total Revenue</h5>
+
+
+    <!-- Charts -->
+
+    <div class="row mt-5">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+                        System Statistics
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="statsChart"></canvas>
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="card-body">
-            <canvas id="revenueChart" height="100"></canvas>
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white">
+
+                    <h5 class="mb-0">
+                        Revenue
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="revenueChart"></canvas>
+
+                </div>
+
+            </div>
+
         </div>
+
+    </div>
+
+
+    <!-- Tables -->
+
+    <div class="row mt-5">
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white">
+
+                    <h5>
+                        Quick Statistics
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="mb-4">
+
+                        Courses
+
+                        <div class="progress mt-2">
+
+                            <div class="progress-bar bg-primary"
+                                 style="width:80%">
+
+                                @Model.Course
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        Users
+
+                        <div class="progress mt-2">
+
+                            <div class="progress-bar bg-success"
+                                 style="width:70%">
+
+                                @Model.User
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        Payments
+
+                        <div class="progress mt-2">
+
+                            <div class="progress-bar bg-warning"
+                                 style="width:90%">
+
+                                @Model.Payment
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-5">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white">
+
+                    <h5>
+                        Overview
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-borderless">
+
+                        <tr>
+
+                            <td>Total Courses</td>
+
+                            <td class="fw-bold">
+                                @Model.Course
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Categories</td>
+
+                            <td class="fw-bold">
+                                @Model.Categories
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Users</td>
+
+                            <td class="fw-bold">
+                                @Model.User
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Payments</td>
+
+                            <td class="fw-bold">
+                                @Model.Payment
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Total Revenue</td>
+
+                            <td class="fw-bold text-success">
+
+                                $@Model.TotalPrice
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
-    // Statistics Chart
-    var ctx1 = document.getElementById('statsChart');
+    new Chart(document.getElementById("statsChart"), {
 
-    new Chart(ctx1, {
-        type: 'bar',
+        type: "bar",
+
         data: {
-            labels: ['Courses', 'Users', 'Payments', 'Categories'],
+
+            labels: [
+
+                "Courses",
+
+                "Users",
+
+                "Payments",
+
+                "Categories"
+
+            ],
+
             datasets: [{
-                label: 'System Data',
+
                 data: [
+
                     @Model.Course,
+
                     @Model.User,
+
                     @Model.Payment,
+
                     @Model.Categories
+
                 ],
+
                 backgroundColor: [
-                    '#0d6efd',
-                    '#198754',
-                    '#ffc107',
-                    '#6f42c1'
-                ],
-                borderWidth: 1
+
+                    "#0d6efd",
+
+                    "#198754",
+
+                    "#ffc107",
+
+                    "#6f42c1"
+
+                ]
+
             }]
+
         },
+
         options: {
+
             responsive: true,
-            maintainAspectRatio: true,
-            scales: {
-                y: {
-                    beginAtZero: true
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
                 }
+
             }
+
         }
+
     });
 
 
-    // Revenue Chart
-    var ctx2 = document.getElementById('revenueChart');
 
-    new Chart(ctx2, {
-        type: 'line',
+    new Chart(document.getElementById("revenueChart"), {
+
+        type: "doughnut",
+
         data: {
-            labels: ['Revenue'],
+
+            labels: [
+
+                "Revenue"
+
+            ],
+
             datasets: [{
-                label: 'Total Revenue ($)',
-                data: [@Model.TotalPrice],
-                backgroundColor: ['#dc3545'],
-                borderColor: '#dc3545',
-                fill: false,
-                tension: 0.3
+
+                data: [
+
+                    @Model.TotalPrice
+
+                ],
+
+                backgroundColor: [
+
+                    "#198754"
+
+                ]
+
             }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true
+
         }
+
     });
 
 </script>

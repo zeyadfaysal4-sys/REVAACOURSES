@@ -89,6 +89,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             var SavedCourse = await _CourseRepository.AddAsync(course);
             await _CourseRepository.CommitAsync();
 
+            TempData["Success-Notification"] = "Course created successfully.";
             return RedirectToAction(nameof(Index));
          
         }
@@ -97,6 +98,7 @@ namespace REVAACOURSES.Areas.Admin.Controllers
             var course = await _CourseRepository.GetOneAsync(c => c.Id == id);
             if(course == null)
             {
+
                 return NotFound();
             }
             return View(new CourseVM()
@@ -113,6 +115,8 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             if (oldCourse == null)
             {
+                TempData["Error-Notification"] = "Course not found.";
+
                 return NotFound();
             }
 
@@ -141,6 +145,8 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             _CourseRepository.UpdateAsync(course);
             await _CourseRepository.CommitAsync();
+            TempData["Success-Notification"] = "Course updated successfully.";
+
             return RedirectToAction(nameof(Index));
         }
         
@@ -163,6 +169,9 @@ namespace REVAACOURSES.Areas.Admin.Controllers
 
             _CourseRepository.DeleteAsync(course);
             await _CourseRepository.CommitAsync();
+
+            TempData["Success-Notification"] = "Course deleted successfully.";
+
             return RedirectToAction(nameof(Index));
         }
     }
